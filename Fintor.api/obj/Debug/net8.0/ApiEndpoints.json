@@ -128,11 +128,17 @@
   {
     "ContainingType": "Fintor.api.Controllers.ReportController",
     "Method": "getOverview",
-    "RelativePath": "api/reports/get-overview",
+    "RelativePath": "api/reports/overview",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "filter",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

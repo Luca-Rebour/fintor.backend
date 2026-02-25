@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<CategorySummaryDto>> GetCategorySpending(Guid userId)
+        public async Task<List<CategorySummaryDto>> GetCategorySpending(Guid userId, int filter)
         {
             var sql = @"
         SELECT 
@@ -45,16 +45,17 @@ namespace Infrastructure.Repositories
         INNER JOIN Accounts a ON t.AccountId = a.Id
         INNER JOIN Categories c ON t.CategoryId = c.Id
         WHERE t.MovementType = 1 
+        AND t.Date >= DATEADD(DAY, -{1}, GETUTCDATE())
         AND a.UserId = {0}
         GROUP BY t.CategoryId, c.Name
         ORDER BY SUM(t.Amount) DESC";
 
             return await _context.Database
-                .SqlQueryRaw<CategorySummaryDto>(sql, userId)
+                .SqlQueryRaw<CategorySummaryDto>(sql, userId, filter)
                 .ToListAsync();
         }
 
-        public async Task<List<CategorySummaryDto>> GetCategoryEarning(Guid userId)
+        public async Task<List<CategorySummaryDto>> GetCategoryEarning(Guid userId, int filter)
         {
             var sql = @"
         SELECT 
@@ -65,30 +66,36 @@ namespace Infrastructure.Repositories
         INNER JOIN Accounts a ON t.AccountId = a.Id
         INNER JOIN Categories c ON t.CategoryId = c.Id
         WHERE t.MovementType = 0 
-        AND a.UserId = {0}
+          AND a.UserId = {0}
+          AND t.Date >= DATEADD(DAY, -{1}, GETUTCDATE())
         GROUP BY t.CategoryId, c.Name
         ORDER BY SUM(t.Amount) DESC";
 
             return await _context.Database
-                .SqlQueryRaw<CategorySummaryDto>(sql, userId)
+                .SqlQueryRaw<CategorySummaryDto>(sql, userId, filter)
                 .ToListAsync();
         }
 
-        public async Task<decimal> GetTotalExpense(Guid userId)
+        public async Task<decimal> GetTotalExpense(Guid userId, int filter)
         {
+            var fromDate = DateTime.UtcNow.AddDays(-filter);
+
             return await _context.Transactions
                     .Where(t => t.MovementType == TransactionType.Expense
-                             && t.Account.UserId == userId)
+                             && t.Account.UserId == userId
+                             && t.Date >= fromDate)
                     .SumAsync(t => t.Amount);
         }
 
-        public async Task<decimal> GetTotalIncome(Guid userId)
+        public async Task<decimal> GetTotalIncome(Guid userId, int filter)
         {
-            return await _context.Transactions
-                    .Where(t => t.MovementType == TransactionType.Income
-                             && t.Account.UserId == userId)
-                    .SumAsync(t => t.Amount);
+            var fromDate = DateTime.UtcNow.AddDays(-filter);
 
+            return await _context.Transactions
+                .Where(t => t.MovementType == TransactionType.Income
+                         && t.Account.UserId == userId
+                         && t.Date >= fromDate)
+                .SumAsync(t => t.Amount);
         }
     }
 }

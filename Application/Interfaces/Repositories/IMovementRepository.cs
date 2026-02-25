@@ -12,9 +12,9 @@ namespace Application.Interfaces.Repositories
     {
         Task<Transaction> CreateMovementAsync(Transaction movement);
         Task<List<Transaction>> GetAccountMovementsAsync(Guid accountId);
-        Task<decimal> GetTotalIncome(Guid userId);
-        Task<decimal> GetTotalExpense(Guid userId);
-        Task<List<CategorySummaryDto>> GetCategorySpending(Guid userId);
-        Task<List<CategorySummaryDto>> GetCategoryEarning(Guid userId);
+        Task<decimal> GetTotalIncome(Guid userId, int filter);
+        Task<decimal> GetTotalExpense(Guid userId, int filter);
+        Task<List<CategorySummaryDto>> GetCategorySpending(Guid userId, int filter);
+        Task<List<CategorySummaryDto>> GetCategoryEarning(Guid userId, int filter);
     }
 }

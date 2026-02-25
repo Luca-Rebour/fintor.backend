@@ -17,13 +17,13 @@ namespace Application.UseCases.Reports
         public GetOverviewResponse(IMovementRepository transactionRepository) {
             _transactionRepository = transactionRepository;
         }
-        public async Task<OverviewResponseDTO> ExecuteAsync(Guid userId)
+        public async Task<OverviewResponseDTO> ExecuteAsync(Guid userId, int filter)
         {
-            decimal totalIncome = await _transactionRepository.GetTotalIncome(userId);
-            decimal totalExpense = await _transactionRepository.GetTotalExpense(userId);
+            decimal totalIncome = await _transactionRepository.GetTotalIncome(userId, filter);
+            decimal totalExpense = await _transactionRepository.GetTotalExpense(userId, filter);
             decimal totalBalance = totalIncome - totalExpense;
-            List<CategorySummaryDto> categorySpending = await _transactionRepository.GetCategorySpending(userId);
-            List<CategorySummaryDto> categoryEarning = await _transactionRepository.GetCategoryEarning(userId);
+            List<CategorySummaryDto> categorySpending = await _transactionRepository.GetCategorySpending(userId, filter);
+            List<CategorySummaryDto> categoryEarning = await _transactionRepository.GetCategoryEarning(userId, filter);
             return new OverviewResponseDTO(totalBalance, totalIncome, totalExpense, categorySpending, categoryEarning);
         }
     }

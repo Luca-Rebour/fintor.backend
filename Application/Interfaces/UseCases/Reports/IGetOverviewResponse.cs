@@ -10,6 +10,6 @@ namespace Application.Interfaces.UseCases.Reports
 {
     public interface IGetOverviewResponse
     {
-        Task<OverviewResponseDTO> ExecuteAsync(Guid userId);
+        Task<OverviewResponseDTO> ExecuteAsync(Guid userId, int filter);
     }
 }
