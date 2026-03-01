@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Auth
 {
-    public class SignInResponseDTO
+    public class LoginResponseDTO
     {
         public string Token { get; set; }
         public UserDTO User { get; set; }

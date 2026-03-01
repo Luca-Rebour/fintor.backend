@@ -9,6 +9,6 @@ namespace Application.Interfaces.UseCases.Transactions
 {
     public interface ICreateTransaction
     {
-        Task<TransactionDTO> ExecuteAsync(CreateTransactionDTO dto);
+        Task<TransactionDTO> ExecuteAsync(CreateTransactionDTO dto, Guid userId);
     }
 }

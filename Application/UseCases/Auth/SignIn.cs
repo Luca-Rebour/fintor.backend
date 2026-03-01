@@ -33,7 +33,7 @@ namespace Application.UseCases.Auth
             _mapper = mapper;
             _jwtService = jwtService;
         }
-        public async Task<SignInResponseDTO> ExecuteAsync(SignInDTO signInDTO)
+        public async Task<LoginResponseDTO> ExecuteAsync(SignInDTO signInDTO)
         {
             User user = await _userRepository.GetUserByEmail(signInDTO.Email);
 
@@ -47,7 +47,7 @@ namespace Application.UseCases.Auth
             }
             UserDTO userDTO = _mapper.Map<UserDTO>(user);
 
-            return new SignInResponseDTO
+            return new LoginResponseDTO
             {
                 Token = _jwtService.GenerateToken(userDTO.Id, userDTO.Email),
                 User = userDTO

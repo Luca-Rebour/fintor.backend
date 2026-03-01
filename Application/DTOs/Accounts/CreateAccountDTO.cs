@@ -10,8 +10,10 @@ namespace Application.DTOs.Accounts
 {
     public class CreateAccountDTO
     {
-        public Guid CurrencyId { get; set; }
+        public string CurrencyCode { get; set; }
         public string Name { get; set; }
+        public decimal InitialBalance { get; set; }
+        public decimal ExchangeRate { get; set; }
 
         public void Validate()
         {
@@ -19,7 +21,12 @@ namespace Application.DTOs.Accounts
             {
                 throw new ArgumentException("Account name is too long. Maximum allowed length is 30 characters.");
             }
-        }
+
+            if (InitialBalance < 0)
+            {
+                throw new ArgumentException("Initial balance cannot be negative.");
+            }
+            }
 
     }
 }

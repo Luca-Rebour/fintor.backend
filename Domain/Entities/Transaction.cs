@@ -16,7 +16,8 @@ namespace Domain.Entities
         public decimal Amount { get; private set; }
         public string Description { get; private set; }
         public DateTime Date { get; private set; }
-        public TransactionType MovementType { get; private set; }
+        public decimal? ExchangeRate { get; private set; }
+        public TransactionType TransactionType { get; private set; }
         public Account Account { get; private set; } = null!;
         public Category Category { get; private set; } = null!;
         public RecurringTransaction? RecurringTransaction { get; private set; }
@@ -26,7 +27,7 @@ namespace Domain.Entities
         {
 
         }
-        public Transaction(Guid accountId, Guid? recurringMovementId, Guid categoryId, decimal amount, string description, TransactionType movementType)
+        public Transaction(Guid accountId, Guid? recurringMovementId, Guid categoryId, decimal amount, string description, TransactionType movementType, decimal? exchangeRate)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
@@ -35,12 +36,13 @@ namespace Domain.Entities
             Amount = amount;
             Description = description;
             Date = DateTime.UtcNow;
-            MovementType = movementType;
+            TransactionType = movementType;
+            ExchangeRate = exchangeRate;
         }
 
         public bool IsIncome()
         {
-            if (MovementType == TransactionType.Income)
+            if (TransactionType == TransactionType.Income)
             {
                 return true;
             }
@@ -49,7 +51,7 @@ namespace Domain.Entities
 
         public bool IsExpense()
         {
-            if (MovementType == TransactionType.Expense)
+            if (TransactionType == TransactionType.Expense)
             {
                 return true;
             }

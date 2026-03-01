@@ -2,7 +2,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
     "Method": "CreateAccount",
-    "RelativePath": "api/accounts/create",
+    "RelativePath": "api/accounts",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -18,7 +18,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
     "Method": "DeleteAccount",
-    "RelativePath": "api/accounts/delete",
+    "RelativePath": "api/accounts",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -34,7 +34,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
     "Method": "GetAllAccounts",
-    "RelativePath": "api/accounts/get-all",
+    "RelativePath": "api/accounts",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -44,7 +44,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
     "Method": "GetAllMovements",
-    "RelativePath": "api/accounts/get-transactions",
+    "RelativePath": "api/accounts/transactions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -60,7 +60,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.AuthController",
     "Method": "SignIn",
-    "RelativePath": "api/auth/sign-in",
+    "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -73,7 +73,27 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Application.DTOs.Auth.SignInResponseDTO",
+        "Type": "Application.DTOs.Auth.LoginResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.AuthController",
+    "Method": "me",
+    "RelativePath": "api/auth/me",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Application.DTOs.Users.UserDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -86,7 +106,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.CategoryController",
     "Method": "CreateCategory",
-    "RelativePath": "api/categories/create",
+    "RelativePath": "api/categories",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -102,7 +122,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.CategoryController",
     "Method": "GetAll",
-    "RelativePath": "api/categories/get-all",
+    "RelativePath": "api/categories",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -132,26 +152,46 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.TransactionController",
+    "Method": "CreateTransaction",
+    "RelativePath": "api/transactions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
     "Parameters": [
       {
-        "Name": "filter",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "createTransactionDTO",
+        "Type": "Application.DTOs.Transactions.CreateTransactionDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "Fintor.api.Controllers.TransactionController",
-    "Method": "CreateTransaction",
-    "RelativePath": "api/transactions/create",
-    "HttpMethod": "POST",
+    "Method": "GetTransactions",
+    "RelativePath": "api/transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.TransactionController",
+    "Method": "DeleteTransaction",
+    "RelativePath": "api/transactions/{transactionId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createMovementDTO",
-        "Type": "Application.DTOs.Transactions.CreateTransactionDTO",
+        "Name": "transactionId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],

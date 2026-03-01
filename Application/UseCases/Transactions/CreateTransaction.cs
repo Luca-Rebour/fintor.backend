@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Transactions;
 using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.Transactions;
 using AutoMapper;
 using Domain.Entities;
@@ -13,19 +14,24 @@ namespace Application.UseCases.Transactions
 {
     public class CreateTransaction : ICreateTransaction
     {
-        private readonly IMovementRepository _movementRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
-        public CreateTransaction(IMovementRepository movementRepository, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateTransaction(ITransactionRepository movementRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _movementRepository = movementRepository;
+            _transactionRepository = movementRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<TransactionDTO> ExecuteAsync(CreateTransactionDTO dto)
+        public async Task<TransactionDTO> ExecuteAsync(CreateTransactionDTO dto, Guid userId)
         {
-            Transaction movement = new Transaction(dto.AccountId, dto.RecurringMovementId, dto.CategoryId, dto.Amount, dto.Description, dto.MovementType);
-            Transaction newMovement = await _movementRepository.CreateMovementAsync(movement);
-            TransactionDTO ret = _mapper.Map<TransactionDTO>(newMovement);
+            dto.Validate();
+            Transaction transaction = new Transaction(dto.AccountId, dto.RecurringTransactionId, dto.CategoryId, dto.Amount, dto.Description, dto.TransactionType, dto.ExchangeRate);
+            _transactionRepository.CreateTransactionAsync(transaction);
+            await _unitOfWork.SaveChangesAsync();
+            transaction = await _transactionRepository.GetTransactionAsync(transaction.Id, userId);
+            TransactionDTO ret = _mapper.Map<TransactionDTO>(transaction);
             return ret;
         }
     }

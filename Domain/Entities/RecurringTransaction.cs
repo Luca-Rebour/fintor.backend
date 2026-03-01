@@ -9,25 +9,28 @@ namespace Domain.Entities
 {
     public class RecurringTransaction
     {
-        public Guid Id { get; private set; }
-        public Guid CategoryId { get; private set; }
-        public Guid AccountId { get; private set; }
+        public Guid Id { get; private set; } 
         public string Name { get; private set; }
         public decimal Amount { get; private set; }
         public string Description { get; private set; }
-        public TransactionType MovementType { get; private set; }
+        public TransactionType TransactionType { get; private set; }
         public Frequency Frequency { get; private set; }
         public DateOnly StartDate { get; private set; }
         public DateOnly EndDate { get; private set; }
         public DateOnly? LastGeneratedAt { get; private set; }
         public ICollection<Transaction> Transactions { get; private set; } = new List<Transaction>();
+
+        public Guid AccountId { get; private set; }
         public Account Account { get; private set; } = null!;
+        
+        public Guid CategoryId { get; private set; }
+        public Category Category { get; private set; } = null!;
 
         public RecurringTransaction()
         {
 
         }
-        public RecurringTransaction(Guid categoryId, Guid accountId, string name, decimal amount, string description, TransactionType movementType, Frequency frequency, DateOnly startDate, DateOnly endDate)
+        public RecurringTransaction(Guid categoryId, Guid accountId, string name, decimal amount, string description, TransactionType transactionType, Frequency frequency, DateOnly startDate, DateOnly endDate)
         {
             Id = Guid.NewGuid();
             CategoryId = categoryId;
@@ -35,7 +38,7 @@ namespace Domain.Entities
             Name = name;
             Amount = amount;
             Description = description;
-            MovementType = movementType;
+            TransactionType = transactionType;
             Frequency = frequency;
             StartDate = startDate;
             EndDate = endDate;

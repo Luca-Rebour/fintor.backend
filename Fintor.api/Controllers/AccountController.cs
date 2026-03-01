@@ -17,8 +17,8 @@ namespace Fintor.api.Controllers
         private readonly ICreateAccount _createAccount;
         private readonly IDeleteAccount _deleteAccount;
         private readonly IGetAllAccounts _getAllAccounts;
-        private readonly IGetAccountMovements _getAccountMovements;
-        public AccountController(ICreateAccount createAccount, IDeleteAccount deleteAccount, IGetAllAccounts getAllAccounts, IGetAccountMovements getAccountMovements)
+        private readonly IGetAccountTransactions _getAccountMovements;
+        public AccountController(ICreateAccount createAccount, IDeleteAccount deleteAccount, IGetAllAccounts getAllAccounts, IGetAccountTransactions getAccountMovements)
         {
             _createAccount = createAccount;
             _deleteAccount = deleteAccount;
@@ -26,7 +26,7 @@ namespace Fintor.api.Controllers
             _getAccountMovements = getAccountMovements;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateAccount(CreateAccountDTO createAccountDTO)
         {
@@ -35,7 +35,7 @@ namespace Fintor.api.Controllers
             return Ok(account);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
@@ -43,7 +43,7 @@ namespace Fintor.api.Controllers
             return NoContent();
         }
 
-        [HttpGet("get-all")]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAllAccounts()
         {
@@ -52,7 +52,7 @@ namespace Fintor.api.Controllers
             return Ok(accounts);
         }
 
-        [HttpGet("get-transactions")]
+        [HttpGet("transactions")]
         [Authorize]
         public async Task<IActionResult> GetAllMovements(Guid accountId)
         {

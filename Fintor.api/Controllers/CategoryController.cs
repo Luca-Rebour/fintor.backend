@@ -20,7 +20,7 @@ namespace Fintor.api.Controllers
             _getAllCategories = getAllCategories;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateCategory(CreateCategoryDTO createCategoryDTO)
         {
@@ -29,7 +29,7 @@ namespace Fintor.api.Controllers
             return Ok(categoryDTO);
         }
 
-        [HttpGet("get-all")]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAll()
         {

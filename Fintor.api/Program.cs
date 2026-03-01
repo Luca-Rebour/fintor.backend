@@ -73,12 +73,11 @@ namespace Fintor.api
             // Configuracion de CORS
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowFrontend", policy =>
+                options.AddPolicy("AllowAll", policy =>
                 {
-                    policy.WithOrigins("http://localhost:4200") // URL del frontend
+                    policy.AllowAnyOrigin()
                           .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                          .AllowAnyMethod();
                 });
             });
 
@@ -86,7 +85,6 @@ namespace Fintor.api
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -133,13 +131,15 @@ namespace Fintor.api
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-            builder.Services.AddScoped<IMovementRepository, TransactionRepository>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<IRecurringMovementRepository, RecurringTransactionRepository>();
+            builder.Services.AddScoped<IRecurringTransactionRepository, RecurringTransactionRepository>();
 
 
             // Inyeccion de dependencias UseCases de User
             builder.Services.AddScoped<ICreateUser, CreateUser>();
+            builder.Services.AddScoped<IMe, Me>();
+
 
             // Inyeccion de dependencias UseCases de Auth
             builder.Services.AddScoped<ISignIn, SignIn>();
@@ -151,7 +151,11 @@ namespace Fintor.api
 
             // Inyeccion de dependencias UseCases de Transaction
             builder.Services.AddScoped<ICreateTransaction, CreateTransaction>();
-            builder.Services.AddScoped<IGetAccountMovements, GetAccountTransactions>();
+            builder.Services.AddScoped<IGetAccountTransactions, GetAccountTransactions>();
+            builder.Services.AddScoped<IGetAllTransactions, GetAllTransactions>();
+            builder.Services.AddScoped<IDeleteTransaction, DeleteTransaction>();
+
+
 
             // Inyeccion de dependencias UseCases de Category
             builder.Services.AddScoped<ICreateCategory, CreateCategory>();
@@ -171,24 +175,41 @@ namespace Fintor.api
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddHostedService<RecurringMovementHostedService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.WebHost.ConfigureKestrel(opt =>
+            {
+                opt.ListenAnyIP(7267, lo => lo.UseHttps()); // HTTPS en LAN
+                opt.ListenAnyIP(5000);                      // HTTP en LAN
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseCors("AllowAll");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseStaticFiles();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fintor v1");
+                    c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+                });
             }
 
-            app.UseHttpsRedirection();
-            app.UseMiddleware<ExceptionMiddleware>();
-            app.UseCors("AllowFrontend");
-            app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

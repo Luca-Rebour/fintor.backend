@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucar\\Desktop\\Fintor\\Fintor-backend\\Domain\\Domain.csproj": {}
+    "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucar\\Desktop\\Fintor\\Fintor-backend\\Domain\\Domain.csproj": {
+    "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucar\\Desktop\\Fintor\\Fintor-backend\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\lucar\\Desktop\\Fintor\\Fintor-backend\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\lucar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucar\\Desktop\\Fintor\\Fintor-backend\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Luca Dev\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lucar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Luca Dev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -61,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

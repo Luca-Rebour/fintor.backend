@@ -13,9 +13,9 @@ namespace Application.UseCases.RecurringTransactions
 {
     public class CreateRecurringTransaction : ICreateRecurringMovement
     {
-        private readonly IRecurringMovementRepository _recurringMovementRepository;
+        private readonly IRecurringTransactionRepository _recurringMovementRepository;
         private readonly IMapper _mapper;
-        public CreateRecurringTransaction(IRecurringMovementRepository recurringMovementRepository, IMapper mapper)
+        public CreateRecurringTransaction(IRecurringTransactionRepository recurringMovementRepository, IMapper mapper)
         {
             _recurringMovementRepository = recurringMovementRepository;
             _mapper = mapper;

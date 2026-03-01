@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.Accounts;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -17,31 +18,49 @@ namespace Application.UseCases.Accounts
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly ITransactionRepository _transactionRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         public CreateAccount(
             IMapper mapper,
             IJwtService jwtService,
             IAccountRepository accountRepository,
-            ICurrencyRepository currencyRepository
+            ITransactionRepository transactionRepository,
+            ICategoryRepository categoryRepository,
+            ICurrencyRepository currencyRepository,
+            IUnitOfWork unitOfWork
             )
         {
             _mapper = mapper;
             _jwtService = jwtService;
             _accountRepository = accountRepository;
+            _transactionRepository = transactionRepository;
+            _categoryRepository = categoryRepository;
             _currencyRepository = currencyRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Account> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
         {
             createAccountDTO.Validate();
-            Currency currency = await _currencyRepository.GetCurrencyAsync(createAccountDTO.CurrencyId);
+            Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
             if (currency == null)
             {
-                throw new NotFoundException("There is no currency with the given Id");
+                currency = new Currency(createAccountDTO.CurrencyCode);
+                _currencyRepository.CreateCurrency(currency);
             }
+
             Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name);
-            Account ret = await _accountRepository.CreateAccountAsync(newAccount);
-            return ret;
+            if (createAccountDTO.InitialBalance > 0)
+            {
+                Category category = await _categoryRepository.GetCategoryByName("General", userId);
+                Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate);
+                _transactionRepository.CreateTransactionAsync(initialBalanceTransaction);
+            }
+            _accountRepository.CreateAccount(newAccount);
+            await _unitOfWork.SaveChangesAsync();
+            return newAccount;
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Application.UseCases.RecurringTransactions
 
     public class GetAccountRecurringTransactions : IGetAccountRecurringMovements
     {
-        private readonly IRecurringMovementRepository _recurringMovementRepository;
+        private readonly IRecurringTransactionRepository _recurringMovementRepository;
         private readonly IMapper _mapper;
-        public GetAccountRecurringTransactions(IRecurringMovementRepository recurringMovementRepository, IMapper mapper)
+        public GetAccountRecurringTransactions(IRecurringTransactionRepository recurringMovementRepository, IMapper mapper)
         {
             _recurringMovementRepository = recurringMovementRepository;
             _mapper = mapper;

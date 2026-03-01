@@ -10,15 +10,17 @@ namespace Domain.Entities
     {
         public Guid Id { get; private set; }
         public string Code { get; private set; }
-        public string Symbol { get; private set; }
-        public string Name { get; private set; }
         public Currency() { }
-        public Currency (Guid id, string code, string symbol, string name)
+        public Currency (string code)
+        {
+            Id = Guid.NewGuid();
+            Code = code;
+        }
+
+        public Currency(Guid id, string code)
         {
             Id = id;
             Code = code;
-            Symbol = symbol;
-            Name = name;
         }
     }
 }

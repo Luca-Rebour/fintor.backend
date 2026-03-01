@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.Accounts;
+using Domain.Entities;
 using Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,13 @@ namespace Application.DTOs.Transactions
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public TransactionType MovementType { get; set; }
-        public RecurringTransaction? RecurringTransaction { get; set; }
-        public Category Category { get; set; }
+        public TransactionType TransactionType { get; set; }
+        public bool IsRecurringTransaction { get; set; }
+        public string CategoryName { get; set; }
+        public string AccountName { get; set; }
+        public decimal? ExchangeRate { get; set; }
+        public string CurrencyCode { get; set; }
+        public string Icon { get; set; }
         public TransactionDTO()
         {
 

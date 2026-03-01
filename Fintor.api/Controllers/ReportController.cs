@@ -20,10 +20,10 @@ namespace Fintor.api.Controllers
 
         [HttpGet("overview")]
         [Authorize]
-        public async Task<IActionResult> getOverview([FromQuery] int filter)
+        public async Task<IActionResult> getOverview()
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            OverviewResponseDTO overviewResponseDTO = await _getOverviewResponse.ExecuteAsync(userId, filter);
+            IReadOnlyList<OverviewResponseDTO> overviewResponseDTO = await _getOverviewResponse.ExecuteAsync(userId);
             return Ok(overviewResponseDTO);
         }
     }

@@ -12,18 +12,41 @@ namespace Fintor.api.Controllers
     [Route("api/transactions")]
     public class TransactionController : Controller
     {
-        private readonly ICreateTransaction _createMovement;
-        public TransactionController(ICreateTransaction createMovement)
+        private readonly ICreateTransaction _createTransaction;
+        private readonly IGetAllTransactions _getAllTransactions;
+        private readonly IDeleteTransaction _deleteTransaction;
+        public TransactionController(ICreateTransaction createTransaction, IGetAllTransactions getAllTransactions, IDeleteTransaction deleteTransaction)
         {
-            _createMovement = createMovement;
+            _createTransaction = createTransaction;
+            _getAllTransactions = getAllTransactions;
+            _deleteTransaction = deleteTransaction;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionDTO createMovementDTO)
+        public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionDTO createTransactionDTO)
         {
-            TransactionDTO movementDto = await _createMovement.ExecuteAsync(createMovementDTO);
-            return Ok(movementDto);
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            TransactionDTO transactionDto = await _createTransaction.ExecuteAsync(createTransactionDTO, userId);
+            return Ok(transactionDto);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetTransactions()
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            List<TransactionDTO> transactionDto = await _getAllTransactions.ExecuteAsync(userId);
+            return Ok(transactionDto);
+        }
+
+        [HttpDelete("{transactionId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteTransaction([FromRoute] Guid transactionId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _deleteTransaction.ExecuteAsync(transactionId, userId);
+            return NoContent();
         }
 
 

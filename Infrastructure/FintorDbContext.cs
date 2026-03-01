@@ -55,14 +55,6 @@ namespace Infrastructure
                        .IsRequired()
                        .HasMaxLength(5);
 
-                builder.Property(c => c.Symbol)
-                       .IsRequired()
-                       .HasMaxLength(5);
-
-                builder.Property(c => c.Name)
-                       .IsRequired()
-                       .HasMaxLength(50);
-
             });
 
 
@@ -81,12 +73,18 @@ namespace Infrastructure
                 builder.Property(c => c.UserId)
                        .IsRequired();
 
+                builder.Property(c => c.Color)
+                       .IsRequired()
+                       .HasMaxLength(100);
+
                 builder.HasOne<User>()
                        .WithMany()
                        .HasForeignKey(c => c.UserId)
                        .OnDelete(DeleteBehavior.Cascade);
 
-               
+                builder.HasIndex(c => new { c.UserId, c.Name })
+                    .IsUnique();
+
             });
  
 
@@ -115,7 +113,7 @@ namespace Infrastructure
                 builder.Property(m => m.Date)
                        .IsRequired();
 
-                builder.Property(m => m.MovementType)
+                builder.Property(m => m.TransactionType)
                        .IsRequired();
             });
 
@@ -149,17 +147,17 @@ namespace Infrastructure
             {
                 builder.HasKey(ps => ps.Id);
 
-                builder.Property(ps => ps.EndPoint)
-                       .IsRequired()
-                       .HasMaxLength(500);
+                builder.Property(ps => ps.Provider)
+                       .IsRequired();
 
-                builder.Property(ps => ps.P256dhKey)
-                       .IsRequired()
-                       .HasMaxLength(200);
+                builder.Property(ps => ps.Platform)
+                       .IsRequired();
 
-                builder.Property(ps => ps.AuthKey)
-                       .IsRequired()
-                       .HasMaxLength(200);
+                builder.Property(ps => ps.DeviceId)
+                       .IsRequired();
+
+                builder.Property(ps => ps.LastSeenAt)
+                .IsRequired();
 
                 builder.Property(ps => ps.UserId)
                        .IsRequired();
@@ -187,7 +185,7 @@ namespace Infrastructure
                        .IsRequired()
                        .HasMaxLength(250);
 
-                builder.Property(rm => rm.MovementType)
+                builder.Property(rm => rm.TransactionType)
                        .IsRequired();
 
                 builder.Property(rm => rm.Frequency)
@@ -204,7 +202,7 @@ namespace Infrastructure
 
 
 
-                builder.HasOne<Category>()
+                builder.HasOne(rm => rm.Category)
                        .WithMany()
                        .HasForeignKey(rm => rm.CategoryId)
                        .OnDelete(DeleteBehavior.Restrict);
@@ -254,6 +252,11 @@ namespace Infrastructure
 
                 builder.Property(u => u.CreatedAt)
                        .IsRequired();
+
+                builder.HasOne(rm => rm.BaseCurrency)
+                   .WithMany()
+                   .HasForeignKey(rm => rm.BaseCurrencyId)
+                   .OnDelete(DeleteBehavior.Restrict);
             });
 
         }

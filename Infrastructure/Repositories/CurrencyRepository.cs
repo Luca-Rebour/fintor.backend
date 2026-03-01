@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,18 @@ namespace Infrastructure.Repositories
         public async Task<Currency?> GetCurrencyAsync(Guid id)
         {
             return await _context.Currencies.FindAsync(id);
+        }
+
+        public async Task<Currency?> GetCurrencyByCodeAsync(string code)
+        {
+            string normalized = code.ToUpper();
+
+            return await _context.Currencies.FirstOrDefaultAsync(c => c.Code.ToUpper() == normalized);
+        }
+
+        public void CreateCurrency(Currency currency)
+        {
+            _context.Currencies.Add(currency);
         }
     }
 }

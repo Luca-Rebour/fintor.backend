@@ -11,6 +11,7 @@ namespace Application.DTOs.Categories
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
         public decimal Total { get; set; }
+        public string CategoryColor { get; set; } = null!;
 
         public CategorySummaryDto(Guid categoryId, string categoryName, decimal total) { 
             CategoryId = categoryId;

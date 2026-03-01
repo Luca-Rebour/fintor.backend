@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Application.DTOs.Users
@@ -13,6 +14,7 @@ namespace Application.DTOs.Users
         public string LastName { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public string BaseCurrencyCode { get; set; } = null!;
         public DateOnly DateOfBirth { get; set; }
 
         public void Validate()

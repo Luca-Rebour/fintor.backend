@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class RecurringTransactionRepository : IRecurringMovementRepository
+    public class RecurringTransactionRepository : IRecurringTransactionRepository
     {
         private readonly FintorDbContext _context;
         public RecurringTransactionRepository(FintorDbContext context)

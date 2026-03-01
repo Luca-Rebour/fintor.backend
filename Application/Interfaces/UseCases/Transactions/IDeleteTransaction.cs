@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.UseCases.Accounts
+namespace Application.Interfaces.UseCases.Transactions
 {
-    public interface IGetAccountMovements
+    public interface IDeleteTransaction
     {
-        Task<List<TransactionDTO>> ExecuteAsync(Guid accountId);
+        Task ExecuteAsync(Guid transactionId, Guid userId);
     }
 }

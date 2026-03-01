@@ -29,5 +29,10 @@ namespace Infrastructure.Repositories
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<Category> GetCategoryByName(string name, Guid userId)
+        {
+            return await _context.Categories.FirstAsync(c => c.Name == name && c.UserId == userId);
+        }
     }
 }

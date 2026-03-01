@@ -14,13 +14,13 @@ namespace Application.UseCases.Accounts
     public class GetAllAccounts : IGetAllAccounts
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IGetAccountMovements _getAccountMovements;
+        private readonly IGetAccountTransactions _getAccountMovements;
         private readonly IMapper _mapper;
         private readonly IGetAccountRecurringMovements _getAccountRecurringMovements;
 
         public GetAllAccounts(
             IAccountRepository accountRepository,
-            IGetAccountMovements getAccountMovements,
+            IGetAccountTransactions getAccountMovements,
             IMapper mapper,
             IGetAccountRecurringMovements getAccountRecurringMovements)
         {
@@ -41,8 +41,8 @@ namespace Application.UseCases.Accounts
                 List<RecurringTransactionDTO> recurringMovements = await _getAccountRecurringMovements.ExecuteAsync(accountDto.Id);
                 accountDto.Balance = movements.Any()
                     ? movements
-                        .Where(m => m.MovementType == TransactionType.Income).Sum(m => m.Amount)
-                        - movements.Where(m => m.MovementType == TransactionType.Expense).Sum(m => m.Amount)
+                        .Where(m => m.TransactionType == TransactionType.Income).Sum(m => m.Amount)
+                        - movements.Where(m => m.TransactionType == TransactionType.Expense).Sum(m => m.Amount)
                     : 0;
 
             }

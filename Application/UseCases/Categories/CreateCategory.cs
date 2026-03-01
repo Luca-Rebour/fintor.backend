@@ -23,7 +23,7 @@ namespace Application.UseCases.Categories
 
         public async Task<CategoryDTO> ExecuteAsync(CreateCategoryDTO createCategoryDTO, Guid userId)
         {
-            Category category = new Category(userId, createCategoryDTO.Name, createCategoryDTO.Icon);
+            Category category = new Category(userId, createCategoryDTO.Name, createCategoryDTO.Icon, createCategoryDTO.Color);
             Category newCategory = await _categoryRepository.CreateAsync(category);
             CategoryDTO categoryDTO = _mapper.Map<CategoryDTO>(newCategory);
             return categoryDTO;

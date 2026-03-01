@@ -10,6 +10,7 @@ namespace Application.Interfaces.Repositories
     public interface ICategoryRepository
     {
         Task<Category> CreateAsync(Category category);
+        Task<Category> GetCategoryByName(string name, Guid userId);
         Task<List<Category>> GetAllAsync(Guid userId);
     }
 }

@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Accounts
 {
-    public class GetAccountTransactions : IGetAccountMovements
+    public class GetAccountTransactions : IGetAccountTransactions
     {
-        private readonly IMovementRepository _movementRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
-        public GetAccountTransactions(IMovementRepository movementRepository, IMapper mapper)
+        public GetAccountTransactions(ITransactionRepository transactionRepository, IMapper mapper)
         {
-            _movementRepository = movementRepository;
+            _transactionRepository = transactionRepository;
             _mapper = mapper;
         }
 
         public async Task<List<TransactionDTO>> ExecuteAsync(Guid accountId)
         {
-            List<Transaction> movements = await _movementRepository.GetAccountMovementsAsync(accountId);
-            List<TransactionDTO> ret = _mapper.Map<List<TransactionDTO>>(movements);
+            List<Transaction> transactions = await _transactionRepository.GetAccountTransactionsAsync(accountId);
+            List<TransactionDTO> ret = _mapper.Map<List<TransactionDTO>>(transactions);
             return ret;
         }
     }

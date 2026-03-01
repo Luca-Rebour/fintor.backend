@@ -19,11 +19,9 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<Account> CreateAccountAsync(Account account)
+        public void CreateAccount(Account account)
         {
             _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
-            return account;
         }
 
         public async Task DeleteAccountAsync(Guid accountId)

@@ -17,16 +17,21 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<User> CreateUser(User user)
+        public void CreateUser(User user)
         {
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
         }
         public async Task<User> GetUserByEmail(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
+        public async Task<User> GetUserById(Guid id)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .Include(u => u.BaseCurrency)
+                .FirstOrDefaultAsync(u => u.Id.Equals(id));
+        }
     }
 }

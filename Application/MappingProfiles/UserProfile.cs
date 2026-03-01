@@ -17,7 +17,9 @@ namespace Application.MappingProfiles
 
             CreateMap<CreateUserDTO, User>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForPath(dest => dest.BaseCurrency.Code,
+                    opt => opt.MapFrom(src => src.BaseCurrencyCode));
 
             CreateMap<User, CreateUserResponseDTO>();
         }

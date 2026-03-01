@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Categories;
+using Application.DTOs.Reports;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Domain.Enums;
@@ -7,11 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class TransactionRepository : IMovementRepository
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly FintorDbContext _context;
         public TransactionRepository(FintorDbContext context)
@@ -19,83 +21,72 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Transaction> CreateMovementAsync(Transaction movement)
+        public async void CreateTransactionAsync(Transaction movement)
         {
             _context.Transactions.Add(movement);
-            await _context.SaveChangesAsync();
-            return movement;
+            return;
         }
 
-        public async Task<List<Transaction>> GetAccountMovementsAsync(Guid accountId)
+        public async Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId)
         {
             return await _context.Transactions
+                .AsNoTracking()
                 .Where(m => m.AccountId == accountId)
                 .Include(m => m.Category)
                 .ToListAsync();
         }
 
-        public async Task<List<CategorySummaryDto>> GetCategorySpending(Guid userId, int filter)
+        public async Task<IReadOnlyList<OverviewResponseDTO>> GetOverview(Guid userId)
         {
-            var sql = @"
-        SELECT 
-            t.CategoryId,
-            c.Name as CategoryName,
-            SUM(t.Amount) as Total
-        FROM Transactions t
-        INNER JOIN Accounts a ON t.AccountId = a.Id
-        INNER JOIN Categories c ON t.CategoryId = c.Id
-        WHERE t.MovementType = 1 
-        AND t.Date >= DATEADD(DAY, -{1}, GETUTCDATE())
-        AND a.UserId = {0}
-        GROUP BY t.CategoryId, c.Name
-        ORDER BY SUM(t.Amount) DESC";
+            List<OverviewRowSql> rows = await _context.Database
+                .SqlQueryRaw<OverviewRowSql>("EXEC dbo.usp_GetOverview {0}", userId)
+                .ToListAsync();
 
-            return await _context.Database
-                .SqlQueryRaw<CategorySummaryDto>(sql, userId, filter)
+            return rows.Select(r => new OverviewResponseDTO(
+                    r.TotalBalance,
+                    r.TotalIncome,
+                    r.TotalExpense,
+                    JsonSerializer.Deserialize<List<CategorySummaryDto>>(r.CategorySpendingJson) ?? new(),
+                    JsonSerializer.Deserialize<List<CategorySummaryDto>>(r.CategoryEarningJson) ?? new()
+                )
+            {
+                DaysAgo = r.DaysAgo
+            })
+                .ToList();
+        }
+
+        public async Task<List<Transaction>> GetAllTransactionsAsync(Guid userId)
+        {
+            return await _context.Transactions
+                .AsNoTracking()
+                .Where(t => t.Account.UserId == userId)
+                .Include(t => t.Category)
+                .Include(t => t.Account)
+                    .ThenInclude(a => a.Currency)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<List<CategorySummaryDto>> GetCategoryEarning(Guid userId, int filter)
+        public async Task<Transaction?> GetTransactionAsync(Guid transactionId, Guid userId)
         {
-            var sql = @"
-        SELECT 
-            t.CategoryId,
-            c.Name as CategoryName,
-            SUM(t.Amount) as Total
-        FROM Transactions t
-        INNER JOIN Accounts a ON t.AccountId = a.Id
-        INNER JOIN Categories c ON t.CategoryId = c.Id
-        WHERE t.MovementType = 0 
-          AND a.UserId = {0}
-          AND t.Date >= DATEADD(DAY, -{1}, GETUTCDATE())
-        GROUP BY t.CategoryId, c.Name
-        ORDER BY SUM(t.Amount) DESC";
-
-            return await _context.Database
-                .SqlQueryRaw<CategorySummaryDto>(sql, userId, filter)
-                .ToListAsync();
+            return await _context.Transactions
+                .AsNoTracking()
+                .Include(t => t.Category)
+                .Include(t => t.Account)
+                .FirstOrDefaultAsync(t => t.Id == transactionId && t.Account.UserId == userId);
         }
 
-        public async Task<decimal> GetTotalExpense(Guid userId, int filter)
+        public async Task<Transaction> GetTrackedTransactionAsync(Guid transactionId, Guid userId)
         {
-            var fromDate = DateTime.UtcNow.AddDays(-filter);
-
             return await _context.Transactions
-                    .Where(t => t.MovementType == TransactionType.Expense
-                             && t.Account.UserId == userId
-                             && t.Date >= fromDate)
-                    .SumAsync(t => t.Amount);
+                .Include(t => t.Category)
+                .Include(t => t.Account)
+                .FirstOrDefaultAsync(t => t.Id == transactionId && t.Account.UserId == userId);
         }
 
-        public async Task<decimal> GetTotalIncome(Guid userId, int filter)
+        public void RemoveTransaction(Transaction transaction)
         {
-            var fromDate = DateTime.UtcNow.AddDays(-filter);
-
-            return await _context.Transactions
-                .Where(t => t.MovementType == TransactionType.Income
-                         && t.Account.UserId == userId
-                         && t.Date >= fromDate)
-                .SumAsync(t => t.Amount);
+            _context.Transactions.Remove(transaction);
         }
     }
 }

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.UseCases.Transactions
+namespace Domain.Enums
 {
-    internal interface IGetCurrentMonthTransactions
+    public enum Platform
     {
+        Android = 0,
+        IOS = 1,
     }
 }

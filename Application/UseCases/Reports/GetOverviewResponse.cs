@@ -12,19 +12,17 @@ namespace Application.UseCases.Reports
 {
     public class GetOverviewResponse : IGetOverviewResponse
     {
-        private readonly IMovementRepository _transactionRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public GetOverviewResponse(IMovementRepository transactionRepository) {
+        public GetOverviewResponse(ITransactionRepository transactionRepository)
+        {
             _transactionRepository = transactionRepository;
         }
-        public async Task<OverviewResponseDTO> ExecuteAsync(Guid userId, int filter)
-        {
-            decimal totalIncome = await _transactionRepository.GetTotalIncome(userId, filter);
-            decimal totalExpense = await _transactionRepository.GetTotalExpense(userId, filter);
-            decimal totalBalance = totalIncome - totalExpense;
-            List<CategorySummaryDto> categorySpending = await _transactionRepository.GetCategorySpending(userId, filter);
-            List<CategorySummaryDto> categoryEarning = await _transactionRepository.GetCategoryEarning(userId, filter);
-            return new OverviewResponseDTO(totalBalance, totalIncome, totalExpense, categorySpending, categoryEarning);
+
+        public async Task<IReadOnlyList<OverviewResponseDTO>> ExecuteAsync(Guid userId){
+
+         return await _transactionRepository.GetOverview(userId);
+
         }
     }
 }

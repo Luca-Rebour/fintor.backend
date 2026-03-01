@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IRecurringMovementRepository
+    public interface IRecurringTransactionRepository
     {
         Task<RecurringTransaction> CreateRecurringMovementAsync(RecurringTransaction recurringMovement);
         Task<List<RecurringTransaction>> GetAllAsync();
