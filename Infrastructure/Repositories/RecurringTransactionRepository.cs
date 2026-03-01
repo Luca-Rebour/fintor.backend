@@ -17,11 +17,11 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<RecurringTransaction> CreateRecurringMovementAsync(RecurringTransaction recurringMovement)
+        public async Task<RecurringTransaction> CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction)
         {
-            _context.RecurringTransactions.Add(recurringMovement);
+            _context.RecurringTransactions.Add(recurringTransaction);
             await _context.SaveChangesAsync();
-            return recurringMovement;
+            return recurringTransaction;
         }
         public async Task<List<RecurringTransaction>> GetAllAsync()
         {
@@ -35,15 +35,15 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task AddAsync(RecurringTransaction recurringMovement)
+        public async Task AddAsync(RecurringTransaction recurringTransaction)
         {
-            await _context.RecurringTransactions.AddAsync(recurringMovement);
+            await _context.RecurringTransactions.AddAsync(recurringTransaction);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(RecurringTransaction recurringMovement)
+        public async Task UpdateAsync(RecurringTransaction recurringTransaction)
         {
-            _context.RecurringTransactions.Update(recurringMovement);
+            _context.RecurringTransactions.Update(recurringTransaction);
             await _context.SaveChangesAsync();
         }
 
@@ -57,7 +57,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task<List<RecurringTransaction>> GetAccountRecurringMovementsAsync(Guid accountId)
+        public async Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync(Guid accountId)
         {
             return await _context.RecurringTransactions
                 .Where(m => m.AccountId == accountId)

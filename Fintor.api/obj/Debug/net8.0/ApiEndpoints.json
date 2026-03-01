@@ -43,7 +43,7 @@
   },
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
-    "Method": "GetAllMovements",
+    "Method": "GetAllTransactions",
     "RelativePath": "api/accounts/transactions",
     "HttpMethod": "GET",
     "IsController": true,
@@ -131,14 +131,30 @@
   },
   {
     "ContainingType": "Fintor.api.Controllers.RecurringTransactionController",
-    "Method": "CreateRecurringMovement",
-    "RelativePath": "api/recurring-transactions/create",
+    "Method": "CreateRecurringTransaction",
+    "RelativePath": "api/recurring-transactions",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createRecurringMovementDTO",
+        "Name": "createRecurringTransactionDTO",
+        "Type": "Application.DTOs.RecurringTransactions.CreateRecurringTransactionDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.RecurringTransactionController",
+    "Method": "GetRecurringTransactions",
+    "RelativePath": "api/recurring-transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createRecurringTransactionDTO",
         "Type": "Application.DTOs.RecurringTransactions.CreateRecurringTransactionDTO",
         "IsRequired": true
       }

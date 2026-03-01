@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.UseCases.RecurringTransactions
 {
-    public interface IGetAccountRecurringMovements
+    public interface IGetAccountRecurringTransactions
     {
         Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId);
     }

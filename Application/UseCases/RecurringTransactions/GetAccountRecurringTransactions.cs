@@ -13,19 +13,19 @@ using System.Threading.Tasks;
 namespace Application.UseCases.RecurringTransactions
 {
 
-    public class GetAccountRecurringTransactions : IGetAccountRecurringMovements
+    public class GetAccountRecurringTransactions : IGetAccountRecurringTransactions
     {
-        private readonly IRecurringTransactionRepository _recurringMovementRepository;
+        private readonly IRecurringTransactionRepository _recurringTransactionRepository;
         private readonly IMapper _mapper;
-        public GetAccountRecurringTransactions(IRecurringTransactionRepository recurringMovementRepository, IMapper mapper)
+        public GetAccountRecurringTransactions(IRecurringTransactionRepository recurringTransactionRepository, IMapper mapper)
         {
-            _recurringMovementRepository = recurringMovementRepository;
+            _recurringTransactionRepository = recurringTransactionRepository;
             _mapper = mapper;
         }
         public async Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId)
         {
-            List<RecurringTransaction> recurringMovements = await _recurringMovementRepository.GetAccountRecurringMovementsAsync(accountId);
-            List<RecurringTransactionDTO> ret = _mapper.Map<List<RecurringTransactionDTO>>(recurringMovements);
+            List<RecurringTransaction> recurringTransactions = await _recurringTransactionRepository.GetAccountRecurringTransactionsAsync(accountId);
+            List<RecurringTransactionDTO> ret = _mapper.Map<List<RecurringTransactionDTO>>(recurringTransactions);
             return ret;
         }
     }

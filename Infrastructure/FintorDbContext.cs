@@ -214,7 +214,7 @@ namespace Infrastructure
 
                 builder.HasMany(rm => rm.Transactions)
                        .WithOne(m => m.RecurringTransaction)
-                       .HasForeignKey(m => m.RecurringMovementId)
+                       .HasForeignKey(m => m.RecurringTransactionId)
                        .OnDelete(DeleteBehavior.SetNull);
             });
 

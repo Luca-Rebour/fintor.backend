@@ -15,9 +15,9 @@ namespace Application.UseCases.Transactions
     {
         private readonly ITransactionRepository _transactionRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteTransaction(ITransactionRepository movementRepository,IUnitOfWork unitOfWork)
+        public DeleteTransaction(ITransactionRepository transactionRepository,IUnitOfWork unitOfWork)
         {
-            _transactionRepository = movementRepository;
+            _transactionRepository = transactionRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task ExecuteAsync(Guid transactionId, Guid userId)

@@ -4,7 +4,7 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.RecurringTransactions;
 using Domain.Entities;
 
-public class GenerateRecurringTransaction : IGenerateRecurringMovements
+public class GenerateRecurringTransaction : IGenerateRecurringTransactions
 {
     private readonly IRecurringTransactionRepository _recurringTransactionRepository;
     private readonly ITransactionRepository _transactionRepository;

@@ -253,7 +253,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal?>("ExchangeRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("RecurringMovementId")
+                    b.Property<Guid?>("RecurringTransactionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransactionType")
@@ -265,7 +265,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("RecurringMovementId");
+                    b.HasIndex("RecurringTransactionId");
 
                     b.ToTable("Transactions");
                 });
@@ -404,7 +404,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.RecurringTransaction", "RecurringTransaction")
                         .WithMany("Transactions")
-                        .HasForeignKey("RecurringMovementId")
+                        .HasForeignKey("RecurringTransactionId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Account");

@@ -17,9 +17,9 @@ namespace Application.UseCases.Transactions
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateTransaction(ITransactionRepository movementRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public CreateTransaction(ITransactionRepository transactionRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _transactionRepository = movementRepository;
+            _transactionRepository = transactionRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }

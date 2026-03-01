@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.UseCases.RecurringTransactions
 {
-    public interface IGenerateRecurringMovements
+    public interface IGenerateRecurringTransactions
     {
         Task ExecuteAsync();
     }

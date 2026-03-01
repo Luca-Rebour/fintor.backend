@@ -166,14 +166,14 @@ namespace Fintor.api
             builder.Services.AddScoped<IGetOverviewResponse, GetOverviewResponse>();
 
             // Inyeccion de dependencias UseCases de RecurringTransaction
-            builder.Services.AddScoped<IGenerateRecurringMovements, GenerateRecurringTransaction>();
-            builder.Services.AddScoped<ICreateRecurringMovement, CreateRecurringTransaction>();
-            builder.Services.AddScoped<IGetAccountRecurringMovements, GetAccountRecurringTransactions>();
+            builder.Services.AddScoped<IGenerateRecurringTransactions, GenerateRecurringTransaction>();
+            builder.Services.AddScoped<ICreateRecurringTransaction, CreateRecurringTransaction>();
+            builder.Services.AddScoped<IGetAccountRecurringTransactions, GetAccountRecurringTransactions>();
 
 
             //Inyeccion de dependencias Services
             builder.Services.AddScoped<IJwtService, JwtService>();
-            builder.Services.AddHostedService<RecurringMovementHostedService>();
+            builder.Services.AddHostedService<RecurringTransactionHostedService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

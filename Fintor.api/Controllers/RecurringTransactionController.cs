@@ -11,18 +11,25 @@ namespace Fintor.api.Controllers
     [Route("api/recurring-transactions")]
     public class RecurringTransactionController : Controller
     {
-        private readonly ICreateRecurringMovement _createRecurringMovement;
-        public RecurringTransactionController(ICreateRecurringMovement createRecurringMovement)
+        private readonly ICreateRecurringTransaction _createRecurringTransaction;
+        public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction)
         {
-            _createRecurringMovement = createRecurringMovement;
+            _createRecurringTransaction = createRecurringTransaction;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateRecurringMovement([FromBody] CreateRecurringTransactionDTO createRecurringMovementDTO)
+        public async Task<IActionResult> CreateRecurringTransaction([FromBody] CreateRecurringTransactionDTO createRecurringTransactionDTO)
         {
-            RecurringTransactionDTO recurringMovementDTO = await _createRecurringMovement.ExecuteAsync(createRecurringMovementDTO);
-            return Ok(recurringMovementDTO);
+            RecurringTransactionDTO recurringTransactionDTO = await _createRecurringTransaction.ExecuteAsync(createRecurringTransactionDTO);
+            return Ok(recurringTransactionDTO);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetRecurringTransactions()
+        {
+            return Ok();
         }
     }
 }
