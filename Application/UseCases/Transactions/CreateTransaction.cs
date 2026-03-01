@@ -28,7 +28,7 @@ namespace Application.UseCases.Transactions
         {
             dto.Validate();
             Transaction transaction = new Transaction(dto.AccountId, dto.RecurringTransactionId, dto.CategoryId, dto.Amount, dto.Description, dto.TransactionType, dto.ExchangeRate);
-            _transactionRepository.CreateTransactionAsync(transaction);
+            _transactionRepository.CreateTransaction(transaction);
             await _unitOfWork.SaveChangesAsync();
             transaction = await _transactionRepository.GetTransactionAsync(transaction.Id, userId);
             TransactionDTO ret = _mapper.Map<TransactionDTO>(transaction);

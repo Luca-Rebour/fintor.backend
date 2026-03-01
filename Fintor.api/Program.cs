@@ -28,6 +28,8 @@ using Application.Interfaces.UseCases.RecurringTransactions;
 using Application.UseCases.RecurringTransactions;
 using Application.Interfaces.UseCases.Reports;
 using Application.UseCases.Reports;
+using Application.Interfaces.UseCases.PendingApproveTransactions;
+using Application.UseCases.PendingApprovalTransactions;
 
 
 namespace Fintor.api
@@ -134,10 +136,11 @@ namespace Fintor.api
             builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IRecurringTransactionRepository, RecurringTransactionRepository>();
+            builder.Services.AddScoped<IPendingApprovalTransactionRepository, PendingApprovalTransactionRepository>();
 
 
-            // Inyeccion de dependencias UseCases de User
-            builder.Services.AddScoped<ICreateUser, CreateUser>();
+			// Inyeccion de dependencias UseCases de User
+			builder.Services.AddScoped<ICreateUser, CreateUser>();
             builder.Services.AddScoped<IMe, Me>();
 
 
@@ -155,10 +158,15 @@ namespace Fintor.api
             builder.Services.AddScoped<IGetAllTransactions, GetAllTransactions>();
             builder.Services.AddScoped<IDeleteTransaction, DeleteTransaction>();
 
+			// Inyeccion de dependencias UseCases de PendingApproveTransaction
+			builder.Services.AddScoped<IApprovePendingApprovalTransaction, ApprovePendingApprovalTransaction>();
+			builder.Services.AddScoped<ICancelPendingApprovalTransaction, CancelPendingApprovalTransaction>();
+			builder.Services.AddScoped<IGetPendingApprovalTransactions, GetPendingApprovalTransactions>();
 
 
-            // Inyeccion de dependencias UseCases de Category
-            builder.Services.AddScoped<ICreateCategory, CreateCategory>();
+
+			// Inyeccion de dependencias UseCases de Category
+			builder.Services.AddScoped<ICreateCategory, CreateCategory>();
             builder.Services.AddScoped<IGetAllCategories, GetAllCategories>();
 
 
@@ -169,10 +177,11 @@ namespace Fintor.api
             builder.Services.AddScoped<IGenerateRecurringTransactions, GenerateRecurringTransaction>();
             builder.Services.AddScoped<ICreateRecurringTransaction, CreateRecurringTransaction>();
             builder.Services.AddScoped<IGetAccountRecurringTransactions, GetAccountRecurringTransactions>();
+			builder.Services.AddScoped<IGetRecurringTransactions, GetRecurringTransactions>();
 
 
-            //Inyeccion de dependencias Services
-            builder.Services.AddScoped<IJwtService, JwtService>();
+			//Inyeccion de dependencias Services
+			builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddHostedService<RecurringTransactionHostedService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

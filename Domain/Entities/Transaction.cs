@@ -10,28 +10,29 @@ namespace Domain.Entities
     public class Transaction
     {
         public Guid Id { get; private set; }
-        public Guid AccountId { get; private set; }
-        public Guid? RecurringTransactionId { get; private set; }
-        public Guid CategoryId { get; private set; }
         public decimal Amount { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
         public DateTime Date { get; private set; }
         public decimal? ExchangeRate { get; private set; }
         public TransactionType TransactionType { get; private set; }
+
+        public Guid AccountId { get; private set; }
         public Account Account { get; private set; } = null!;
-        public Category Category { get; private set; } = null!;
-        public RecurringTransaction? RecurringTransaction { get; private set; }
+        public Guid CategoryId { get; private set; }
+		public Category Category { get; private set; } = null!;
+        public Guid? PendingApprovalTransactionId { get; private set; }
+		public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
 
 
         public Transaction()
         {
 
         }
-        public Transaction(Guid accountId, Guid? recurringTransactionId, Guid categoryId, decimal amount, string description, TransactionType transactionType, decimal? exchangeRate)
+        public Transaction(Guid accountId, Guid? pendingApprovalTransactionId, Guid categoryId, decimal amount, string? description, TransactionType transactionType, decimal? exchangeRate)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
-            RecurringTransactionId = recurringTransactionId;
+			PendingApprovalTransactionId = pendingApprovalTransactionId;
             CategoryId = categoryId;
             Amount = amount;
             Description = description;

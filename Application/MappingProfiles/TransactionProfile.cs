@@ -18,7 +18,7 @@ namespace Application.MappingProfiles
                 .ForMember(dest => dest.TransactionType,
                     opt => opt.MapFrom(src => src.TransactionType))
                 .ForMember(dest => dest.IsRecurringTransaction,
-                    opt => opt.MapFrom(src => src.RecurringTransaction != null))
+                    opt => opt.MapFrom(src => src.PendingApprovalTransaction != null))
                 .ForMember(dest => dest.CategoryName,
                     opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.AccountName,
