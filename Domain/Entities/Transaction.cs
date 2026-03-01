@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public Guid Id { get; private set; }
         public Guid AccountId { get; private set; }
-        public Guid? RecurringMovementId { get; private set; }
+        public Guid? RecurringTransactionId { get; private set; }
         public Guid CategoryId { get; private set; }
         public decimal Amount { get; private set; }
         public string Description { get; private set; }
@@ -27,16 +27,16 @@ namespace Domain.Entities
         {
 
         }
-        public Transaction(Guid accountId, Guid? recurringMovementId, Guid categoryId, decimal amount, string description, TransactionType movementType, decimal? exchangeRate)
+        public Transaction(Guid accountId, Guid? recurringTransactionId, Guid categoryId, decimal amount, string description, TransactionType transactionType, decimal? exchangeRate)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
-            RecurringMovementId = recurringMovementId;
+            RecurringTransactionId = recurringTransactionId;
             CategoryId = categoryId;
             Amount = amount;
             Description = description;
             Date = DateTime.UtcNow;
-            TransactionType = movementType;
+            TransactionType = transactionType;
             ExchangeRate = exchangeRate;
         }
 

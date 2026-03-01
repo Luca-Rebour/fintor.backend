@@ -21,9 +21,9 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async void CreateTransactionAsync(Transaction movement)
+        public async void CreateTransactionAsync(Transaction transaction)
         {
-            _context.Transactions.Add(movement);
+            _context.Transactions.Add(transaction);
             return;
         }
 

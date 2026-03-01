@@ -14,7 +14,7 @@ namespace Application.DTOs.RecurringTransactions
         public string Name { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
-        public TransactionType movementType { get; set; }
+        public TransactionType transactionType { get; set; }
         public Frequency Frequency { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
