@@ -10,36 +10,51 @@ public class GenerateRecurringTransaction : IGenerateRecurringTransactions
     private readonly ITransactionRepository _transactionRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IUnitOfWork _unitOfWork;
+	private readonly IPendingApprovalTransactionRepository _pendingApprovalTransactionRepository;
 
-    public GenerateRecurringTransaction(
+	public GenerateRecurringTransaction(
         IRecurringTransactionRepository recurringRepo,
         ITransactionRepository transactionRepo,
         IDateTimeProvider dateTimeProvider,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IPendingApprovalTransactionRepository pendingApprovalTransactionRepository)
     {
         _recurringTransactionRepository = recurringRepo;
         _transactionRepository = transactionRepo;
         _dateTimeProvider = dateTimeProvider;
         _unitOfWork = unitOfWork;
+        _pendingApprovalTransactionRepository = pendingApprovalTransactionRepository;
     }
 
     public async Task ExecuteAsync()
     {
-        var today = DateOnly.FromDateTime(_dateTimeProvider.UtcNow);
-        var recurrents = await _recurringTransactionRepository.GetAllAsync();
+		DateOnly today = DateOnly.FromDateTime(_dateTimeProvider.UtcNow);
+        List<RecurringTransaction> recurrents = await _recurringTransactionRepository.GetRecurringTransactionsDueUpTo(today);
+		List<PendingApprovalTransaction> pendingAprovalTransactions = new List<PendingApprovalTransaction>();
 
-        foreach (RecurringTransaction r in recurrents)
-        {
-            if (r.ShouldGenerate(today))
-            {
-                var transaction = new Transaction(r.AccountId,r.Id, r.CategoryId, r.Amount, r.Description, r.TransactionType, null);
-                
 
-                _transactionRepository.CreateTransactionAsync(transaction);
-                await _unitOfWork.SaveChangesAsync();
-                r.SetLastGenerated(today);
-                await _recurringTransactionRepository.UpdateAsync(r);
-            }
-        }
-    }
+		foreach (RecurringTransaction r in recurrents)
+		{
+			while (r.NextDueDate <= today && r.NextDueDate <= r.EndDate)
+			{
+				DateOnly dueDate = r.ConsumeNextDueDate();
+
+				PendingApprovalTransaction transaction = new PendingApprovalTransaction(
+					r.AccountId,
+					r.Id,
+					r.CategoryId,
+					r.Amount,
+					r.Description,
+					r.TransactionType,
+					dueDate
+				);
+
+				_pendingApprovalTransactionRepository.CreatePendingApprovalTransaction(transaction);
+			}
+
+			_recurringTransactionRepository.Update(r);
+		}
+
+		await _unitOfWork.SaveChangesAsync();
+	}
 }

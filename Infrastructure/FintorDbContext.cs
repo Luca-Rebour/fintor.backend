@@ -22,8 +22,10 @@ namespace Infrastructure
         public DbSet<Notification> Notifications => Set<Notification>();
         public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
         public DbSet<Currency> Currencies => Set<Currency>();
+		public DbSet<PendingApprovalTransaction> PendingAprovalTransactions => Set<PendingApprovalTransaction>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.SeedCurrencies();
@@ -197,9 +199,6 @@ namespace Infrastructure
                 builder.Property(rm => rm.EndDate)
                        .IsRequired();
 
-                builder.Property(rm => rm.LastGeneratedAt)
-                       .IsRequired(false);
-
 
 
                 builder.HasOne(rm => rm.Category)
@@ -212,13 +211,21 @@ namespace Infrastructure
                        .HasForeignKey(rm => rm.AccountId)
                        .OnDelete(DeleteBehavior.Restrict);
 
-                builder.HasMany(rm => rm.Transactions)
+                builder.HasMany(rm => rm.PendingApprovalTransactions)
                        .WithOne(m => m.RecurringTransaction)
                        .HasForeignKey(m => m.RecurringTransactionId)
-                       .OnDelete(DeleteBehavior.SetNull);
+                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<User>(builder =>
+			modelBuilder.Entity<PendingApprovalTransaction>(entity =>
+			{
+				entity.HasOne(p => p.Transaction)
+					  .WithOne(t => t.PendingApprovalTransaction)
+					  .HasForeignKey<PendingApprovalTransaction>(p => p.TransactionId)
+					  .OnDelete(DeleteBehavior.Restrict);
+			});
+
+			modelBuilder.Entity<User>(builder =>
             {
                 builder.HasKey(u => u.Id);
 

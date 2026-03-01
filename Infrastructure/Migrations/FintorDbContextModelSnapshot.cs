@@ -143,6 +143,57 @@ namespace Infrastructure.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PendingApprovalTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("ConfirmedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("RecurringTransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("RecurringTransactionId");
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique()
+                        .HasFilter("[TransactionId] IS NOT NULL");
+
+                    b.ToTable("PendingAprovalTransactions");
+                });
+
             modelBuilder.Entity("Domain.Entities.PushSubscription", b =>
                 {
                     b.Property<Guid>("Id")
@@ -203,13 +254,13 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Frequency")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("LastGeneratedAt")
-                        .HasColumnType("date");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateOnly>("NextDueDate")
+                        .HasColumnType("date");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
@@ -253,7 +304,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal?>("ExchangeRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("RecurringTransactionId")
+                    b.Property<Guid?>("PendingApprovalTransactionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransactionType")
@@ -264,8 +315,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("RecurringTransactionId");
 
                     b.ToTable("Transactions");
                 });
@@ -360,6 +409,40 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.PendingApprovalTransaction", b =>
+                {
+                    b.HasOne("Domain.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.RecurringTransaction", "RecurringTransaction")
+                        .WithMany("PendingApprovalTransactions")
+                        .HasForeignKey("RecurringTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Transaction", "Transaction")
+                        .WithOne("PendingApprovalTransaction")
+                        .HasForeignKey("Domain.Entities.PendingApprovalTransaction", "TransactionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("RecurringTransaction");
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("Domain.Entities.PushSubscription", b =>
                 {
                     b.HasOne("Domain.Entities.User", null)
@@ -402,16 +485,9 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.RecurringTransaction", "RecurringTransaction")
-                        .WithMany("Transactions")
-                        .HasForeignKey("RecurringTransactionId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Account");
 
                     b.Navigation("Category");
-
-                    b.Navigation("RecurringTransaction");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -427,7 +503,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RecurringTransaction", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("PendingApprovalTransactions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Transaction", b =>
+                {
+                    b.Navigation("PendingApprovalTransaction");
                 });
 #pragma warning restore 612, 618
         }

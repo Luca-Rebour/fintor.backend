@@ -23,45 +23,52 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return recurringTransaction;
         }
-        public async Task<List<RecurringTransaction>> GetAllAsync()
+        public async Task<List<RecurringTransaction>> GetAsync(Guid userId)
         {
-            return await _context.RecurringTransactions.ToListAsync();
+            return await _context.RecurringTransactions
+                .AsNoTracking()
+                .Where(r => r.Account.UserId == userId)
+				.ToListAsync();
         }
 
 
         public async Task<RecurringTransaction?> GetByIdAsync(Guid id)
         {
             return await _context.RecurringTransactions
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .AsNoTracking()
+				.FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task AddAsync(RecurringTransaction recurringTransaction)
+        public void AddAsync(RecurringTransaction recurringTransaction)
         {
-            await _context.RecurringTransactions.AddAsync(recurringTransaction);
-            await _context.SaveChangesAsync();
+            _context.RecurringTransactions.AddAsync(recurringTransaction);
         }
 
-        public async Task UpdateAsync(RecurringTransaction recurringTransaction)
+        public void DeleteAsync(RecurringTransaction recurringTransaction)
         {
-            _context.RecurringTransactions.Update(recurringTransaction);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            var entity = await GetByIdAsync(id);
-            if (entity != null)
-            {
-                _context.RecurringTransactions.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                _context.RecurringTransactions.Remove(recurringTransaction);
         }
 
         public async Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync(Guid accountId)
         {
             return await _context.RecurringTransactions
+                .AsNoTracking()
                 .Where(m => m.AccountId == accountId)
                 .ToListAsync();
         }
+
+        public void Update(RecurringTransaction recurringTransaction)
+        {
+            _context.RecurringTransactions.Update(recurringTransaction);
+		}
+
+        public async Task<List<RecurringTransaction>> GetRecurringTransactionsDueUpTo(DateOnly date)
+        {
+            List<RecurringTransaction> recurrents = await _context.RecurringTransactions
+                .Where(r => r.NextDueDate <= date && r.NextDueDate <= r.EndDate)
+                .ToListAsync();
+            return recurrents;
+
+		}
     }
 }

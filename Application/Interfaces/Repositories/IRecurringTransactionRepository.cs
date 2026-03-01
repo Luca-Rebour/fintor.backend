@@ -10,11 +10,12 @@ namespace Application.Interfaces.Repositories
     public interface IRecurringTransactionRepository
     {
         Task<RecurringTransaction> CreateRecurringTransactionAsync(RecurringTransaction recurringTransaction);
-        Task<List<RecurringTransaction>> GetAllAsync();
         Task<RecurringTransaction?> GetByIdAsync(Guid id);
-        Task AddAsync(RecurringTransaction recurringTransaction);
-        Task UpdateAsync(RecurringTransaction recurringTransaction);
-        Task DeleteAsync(Guid id);
+        void AddAsync(RecurringTransaction recurringTransaction);
+        void Update(RecurringTransaction recurringTransaction);
+        void DeleteAsync(RecurringTransaction recurringTransaction);
         Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync (Guid accountId);
+        Task<List<RecurringTransaction>> GetAsync(Guid userId);
+        Task<List<RecurringTransaction>> GetRecurringTransactionsDueUpTo(DateOnly date);
     }
 }

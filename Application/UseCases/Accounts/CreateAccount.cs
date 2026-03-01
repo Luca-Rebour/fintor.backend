@@ -56,7 +56,7 @@ namespace Application.UseCases.Accounts
             {
                 Category category = await _categoryRepository.GetCategoryByName("General", userId);
                 Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate);
-                _transactionRepository.CreateTransactionAsync(initialBalanceTransaction);
+                _transactionRepository.CreateTransaction(initialBalanceTransaction);
             }
             _accountRepository.CreateAccount(newAccount);
             await _unitOfWork.SaveChangesAsync();

@@ -130,6 +130,53 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
+    "Method": "GetPendingApprovalTransactions",
+    "RelativePath": "api/pending-approve-transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
+    "Method": "ApprovePendingApprovalTransaction",
+    "RelativePath": "api/pending-approve-transactions/{pendingApprovalTransactionId}/approve",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pendingApprovalTransactionId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "exchangeRate",
+        "Type": "System.Nullable\u00601[[System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
+    "Method": "CancelPendingApprovalTransaction",
+    "RelativePath": "api/pending-approve-transactions/{pendingApprovalTransactionId}/cancel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pendingApprovalTransactionId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Fintor.api.Controllers.RecurringTransactionController",
     "Method": "CreateRecurringTransaction",
     "RelativePath": "api/recurring-transactions",
@@ -152,13 +199,7 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "createRecurringTransactionDTO",
-        "Type": "Application.DTOs.RecurringTransactions.CreateRecurringTransactionDTO",
-        "IsRequired": true
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

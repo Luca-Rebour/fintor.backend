@@ -4,6 +4,7 @@ using Application.Interfaces.UseCases.Transactions;
 using Application.Interfaces.UseCases.RecurringTransactions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Fintor.api.Controllers
 {
@@ -12,9 +13,11 @@ namespace Fintor.api.Controllers
     public class RecurringTransactionController : Controller
     {
         private readonly ICreateRecurringTransaction _createRecurringTransaction;
-        public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction)
+        private readonly IGetRecurringTransactions _getRecurringTransactions;
+        public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction, IGetRecurringTransactions getRecurringTransactions)
         {
             _createRecurringTransaction = createRecurringTransaction;
+            _getRecurringTransactions = getRecurringTransactions;
         }
 
         [HttpPost]
@@ -29,7 +32,9 @@ namespace Fintor.api.Controllers
         [Authorize]
         public async Task<IActionResult> GetRecurringTransactions()
         {
-            return Ok();
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            List<RecurringTransactionDTO> recurringTransactionDTOs = await _getRecurringTransactions.ExecuteAsync(userId);
+            return Ok(recurringTransactionDTOs);
         }
     }
 }

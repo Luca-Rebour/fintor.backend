@@ -14,11 +14,14 @@ namespace Application.DTOs.RecurringTransactions
         public string Name { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
-        public TransactionType transactionType { get; set; }
+        public TransactionType TransactionType { get; set; }
         public Frequency Frequency { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public DateOnly LastGeneratedAt { get; set; }
-        public Account Account { get; set; } = null!;
+        public DateOnly NextChargeDate { get; set; }
+        public string CurrencyCode { get; set; }
+        public string AccountName { get; set; }
+
     }
 }
