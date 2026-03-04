@@ -55,7 +55,7 @@ namespace Application.UseCases.Accounts
             if (createAccountDTO.InitialBalance > 0)
             {
                 Category category = await _categoryRepository.GetCategoryByName("General", userId);
-                Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate);
+                Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate, null);
                 _transactionRepository.CreateTransaction(initialBalanceTransaction);
             }
             _accountRepository.CreateAccount(newAccount);

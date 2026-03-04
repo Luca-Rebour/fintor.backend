@@ -17,6 +17,7 @@ namespace Application.DTOs.Transactions
         public string Description { get; set; }
         public decimal? ExchangeRate { get; set; }
         public TransactionType TransactionType { get; set; }
+        public Guid? GoalId { get; set; }
 
         public CreateTransactionDTO() { }
 

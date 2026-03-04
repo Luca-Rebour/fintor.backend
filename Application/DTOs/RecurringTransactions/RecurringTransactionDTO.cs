@@ -15,6 +15,7 @@ namespace Application.DTOs.RecurringTransactions
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public TransactionType TransactionType { get; set; }
+        public string Icon { get; set; } = null!;
         public Frequency Frequency { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }

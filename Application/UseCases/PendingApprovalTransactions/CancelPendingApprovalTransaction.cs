@@ -30,7 +30,7 @@ namespace Application.UseCases.PendingApprovalTransactions
                 throw new KeyNotFoundException("Pending approval transaction not found");
             }
 
-            if (!pendingApprovalTransaction.Account.UserId.Equals(_pendingApprovalTransactionRepository))
+            if (!pendingApprovalTransaction.Account.UserId.Equals(userId))
             {
                 throw new UnauthorizedAccessException("User does not have access to do the requested action");
             }

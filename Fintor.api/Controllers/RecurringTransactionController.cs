@@ -1,7 +1,8 @@
-﻿using Application.DTOs.Transactions;
-using Application.DTOs.RecurringTransactions;
-using Application.Interfaces.UseCases.Transactions;
+﻿using Application.DTOs.RecurringTransactions;
+using Application.DTOs.Transactions;
 using Application.Interfaces.UseCases.RecurringTransactions;
+using Application.Interfaces.UseCases.Transactions;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,10 +15,14 @@ namespace Fintor.api.Controllers
     {
         private readonly ICreateRecurringTransaction _createRecurringTransaction;
         private readonly IGetRecurringTransactions _getRecurringTransactions;
-        public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction, IGetRecurringTransactions getRecurringTransactions)
+        private readonly IDeleteRecurringTransaction _deleteRecurringTransaction;
+        public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction, 
+            IGetRecurringTransactions getRecurringTransactions, 
+            IDeleteRecurringTransaction deleteRecurringTransaction)
         {
             _createRecurringTransaction = createRecurringTransaction;
             _getRecurringTransactions = getRecurringTransactions;
+            _deleteRecurringTransaction = deleteRecurringTransaction;
         }
 
         [HttpPost]
@@ -35,6 +40,15 @@ namespace Fintor.api.Controllers
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             List<RecurringTransactionDTO> recurringTransactionDTOs = await _getRecurringTransactions.ExecuteAsync(userId);
             return Ok(recurringTransactionDTOs);
+        }
+
+        [HttpDelete("{recurringTransactionId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteRecurringTransaction([FromRoute] Guid recurringTransactionId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _deleteRecurringTransaction.ExecuteAsync(recurringTransactionId, userId);
+            return NoContent();
         }
     }
 }

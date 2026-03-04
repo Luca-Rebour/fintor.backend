@@ -23,9 +23,10 @@ namespace Infrastructure
         public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
         public DbSet<Currency> Currencies => Set<Currency>();
 		public DbSet<PendingApprovalTransaction> PendingAprovalTransactions => Set<PendingApprovalTransaction>();
+		public DbSet<Goal> Goals => Set<Goal>();
 
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.SeedCurrencies();
@@ -108,12 +109,19 @@ namespace Infrastructure
                    .HasForeignKey(m => m.AccountId)
                    .OnDelete(DeleteBehavior.Restrict);
 
+                builder.HasOne(m => m.Goal)
+                   .WithMany(g => g.Transactions)
+                   .HasForeignKey(m => m.GoalId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
                 builder.Property(m => m.Description)
                        .IsRequired()
                        .HasMaxLength(250);
 
                 builder.Property(m => m.Date)
                        .IsRequired();
+
+                builder.Property(x => x.ExchangeRate).HasPrecision(18, 6);
 
                 builder.Property(m => m.TransactionType)
                        .IsRequired();
@@ -223,7 +231,9 @@ namespace Infrastructure
 					  .WithOne(t => t.PendingApprovalTransaction)
 					  .HasForeignKey<PendingApprovalTransaction>(p => p.TransactionId)
 					  .OnDelete(DeleteBehavior.Restrict);
-			});
+
+                entity.Property(x => x.Amount).HasPrecision(18, 2);
+            });
 
 			modelBuilder.Entity<User>(builder =>
             {
@@ -264,6 +274,23 @@ namespace Infrastructure
                    .WithMany()
                    .HasForeignKey(rm => rm.BaseCurrencyId)
                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Goal>(builder =>
+            {
+                builder.HasKey(g => g.Id);
+
+                builder.HasMany(g => g.Transactions)
+                       .WithOne(g => g.Goal)
+                       .HasForeignKey(g => g.GoalId)
+                       .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasOne(g => g.Account)
+                       .WithMany()
+                       .HasForeignKey(g => g.AccountId)
+                       .OnDelete(DeleteBehavior.Restrict);
+
+                builder.Property(x => x.TargetAmount).HasPrecision(18, 2);
             });
 
         }

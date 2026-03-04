@@ -42,8 +42,8 @@ namespace Domain.Entities
             TransactionType = transactionType;
         }
 
-            public void Approve(DateOnly confirmedAt, Guid transactionId)
-            {
+         public void Approve(DateOnly confirmedAt, Guid transactionId)
+         {
                 if (Status != PendingTransactionStatus.Pending)
                     throw new InvalidOperationException("Only pending transactions can be approved.");
     
@@ -53,10 +53,16 @@ namespace Domain.Entities
         }
         public void Cancel()
         {
-            if (Status != PendingTransactionStatus.Pending)
-                throw new InvalidOperationException("Only pending transactions can be rejected.");
+            if (Status == PendingTransactionStatus.Approved)
+                throw new InvalidOperationException("Approved transactions cannot be rejected.");
     
             Status = PendingTransactionStatus.Cancelled;
+        }
+
+        public void Reschedule(DateOnly newDate)
+        {
+            DueDate = newDate;
+            Status = PendingTransactionStatus.Rescheduled;
         }
     }
 }
