@@ -36,12 +36,12 @@ namespace Application.UseCases.PendingApprovalTransactions
                 throw new KeyNotFoundException("Pending approval transaction not found");
             }
 
-            if (!pendingApprovalTransaction.Account.UserId.Equals(_pendingApprovalTransactionRepository))
+            if (!pendingApprovalTransaction.Account.UserId.Equals(userId))
             {
                 throw new UnauthorizedAccessException("User does not have access to do the requested action");
             }
 
-            Transaction transaction = new Transaction(pendingApprovalTransaction.AccountId, pendingApprovalTransaction.Id, pendingApprovalTransaction.CategoryId, pendingApprovalTransaction.Amount, pendingApprovalTransaction.Description, pendingApprovalTransaction.TransactionType, exchangeRate);
+            Transaction transaction = new Transaction(pendingApprovalTransaction.AccountId, pendingApprovalTransaction.Id, pendingApprovalTransaction.CategoryId, pendingApprovalTransaction.Amount, pendingApprovalTransaction.Description, pendingApprovalTransaction.TransactionType, exchangeRate, null);
             _transactionRepository.CreateTransaction(transaction);
             pendingApprovalTransaction.Approve(DateOnly.FromDateTime(DateTime.UtcNow), transaction.Id);
             _pendingApprovalTransactionRepository.Update(pendingApprovalTransaction);

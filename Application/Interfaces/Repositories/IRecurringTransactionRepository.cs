@@ -16,6 +16,8 @@ namespace Application.Interfaces.Repositories
         void DeleteAsync(RecurringTransaction recurringTransaction);
         Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync (Guid accountId);
         Task<List<RecurringTransaction>> GetAsync(Guid userId);
+        Task<RecurringTransaction?> GetBydIdToUpdateAsync(Guid RecurringTransactionId);
         Task<List<RecurringTransaction>> GetRecurringTransactionsDueUpTo(DateOnly date);
+        void Delete(RecurringTransaction recurringTransaction);
     }
 }

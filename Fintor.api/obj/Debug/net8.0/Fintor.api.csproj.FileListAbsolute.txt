@@ -730,10 +730,10 @@ C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebas
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\swae.build.ex.cache
-C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.csproj.Up2Date
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.dll
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\refint\Fintor.api.dll
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.pdb
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.genruntimeconfig.cache
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\ref\Fintor.api.dll
+C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

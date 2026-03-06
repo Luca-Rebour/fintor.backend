@@ -17,7 +17,6 @@ namespace Application.DTOs.RecurringTransactions
         public Frequency Frequency { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
-        public DateOnly LastGeneratedAt { get; set; }
         public Guid AccountId { get; set; }
         public Guid CategoryId { get; set; }
     }

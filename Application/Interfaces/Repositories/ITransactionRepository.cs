@@ -18,6 +18,8 @@ namespace Application.Interfaces.Repositories
         Task<IReadOnlyList<OverviewResponseDTO>> GetOverview(Guid userId);
         Task<Transaction> GetTrackedTransactionAsync(Guid transactionId, Guid userId);
         void RemoveTransaction(Transaction transaction);
+        Task<List<Transaction>> GetTransactionByGoalIdAsync(Guid goalId, Guid userId);
+
 
     }
 }

@@ -8,16 +8,16 @@ namespace Domain.Entities
 {
     public class Goal
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public decimal TargetAmount { get; set; }
-        public decimal CurrentAmount { get; set; }
-        public string Icon { get; set; }
-        public DateTime TargetDate { get; set; }
-        public string AccentColor { get; set; }
-
+        public Guid Id { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public decimal TargetAmount { get; private set; }
+        public string Icon { get; private set; }
+        public DateTime TargetDate { get; private set; }
+        public string AccentColor { get; private set; }
+        public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
+        public Guid AccountId { get; private set; }
+        public Account Account { get; private set; }
         public Goal()
         {
         }

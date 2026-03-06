@@ -30,6 +30,8 @@ using Application.Interfaces.UseCases.Reports;
 using Application.UseCases.Reports;
 using Application.Interfaces.UseCases.PendingApproveTransactions;
 using Application.UseCases.PendingApprovalTransactions;
+using Application.Interfaces.UseCases.Goals;
+using Application.UseCases.Goals;
 
 
 namespace Fintor.api
@@ -122,6 +124,8 @@ namespace Fintor.api
                 cfg.AddProfile<TransactionProfile>();
                 cfg.AddProfile<RecurringTransactionProfile>();
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<GoalProfile>();
+
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -137,10 +141,12 @@ namespace Fintor.api
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IRecurringTransactionRepository, RecurringTransactionRepository>();
             builder.Services.AddScoped<IPendingApprovalTransactionRepository, PendingApprovalTransactionRepository>();
+            builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 
 
-			// Inyeccion de dependencias UseCases de User
-			builder.Services.AddScoped<ICreateUser, CreateUser>();
+
+            // Inyeccion de dependencias UseCases de User
+            builder.Services.AddScoped<ICreateUser, CreateUser>();
             builder.Services.AddScoped<IMe, Me>();
 
 
@@ -162,7 +168,7 @@ namespace Fintor.api
 			builder.Services.AddScoped<IApprovePendingApprovalTransaction, ApprovePendingApprovalTransaction>();
 			builder.Services.AddScoped<ICancelPendingApprovalTransaction, CancelPendingApprovalTransaction>();
 			builder.Services.AddScoped<IGetPendingApprovalTransactions, GetPendingApprovalTransactions>();
-
+			builder.Services.AddScoped<IReschedulePendingApprovalTransaction, ReschedulePendingApprovalTransaction>();
 
 
 			// Inyeccion de dependencias UseCases de Category
@@ -178,10 +184,17 @@ namespace Fintor.api
             builder.Services.AddScoped<ICreateRecurringTransaction, CreateRecurringTransaction>();
             builder.Services.AddScoped<IGetAccountRecurringTransactions, GetAccountRecurringTransactions>();
 			builder.Services.AddScoped<IGetRecurringTransactions, GetRecurringTransactions>();
+			builder.Services.AddScoped<IDeleteRecurringTransaction, DeleteRecurringTransaction>();
+
+            // Inyeccion de dependencias UseCases de Goal
+            builder.Services.AddScoped<IGetAllGoals, GetAllGoals>();
+            builder.Services.AddScoped<ICreateGoal, CreateGoal>();
+            builder.Services.AddScoped<IGetGoalTransactions, GetGoalTransactions>();
 
 
-			//Inyeccion de dependencias Services
-			builder.Services.AddScoped<IJwtService, JwtService>();
+
+            //Inyeccion de dependencias Services
+            builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddHostedService<RecurringTransactionHostedService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

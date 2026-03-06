@@ -22,13 +22,14 @@ namespace Domain.Entities
 		public Category Category { get; private set; } = null!;
         public Guid? PendingApprovalTransactionId { get; private set; }
 		public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
-
+        public Guid? GoalId { get; private set; }
+        public Goal? Goal { get; private set; }
 
         public Transaction()
         {
 
         }
-        public Transaction(Guid accountId, Guid? pendingApprovalTransactionId, Guid categoryId, decimal amount, string? description, TransactionType transactionType, decimal? exchangeRate)
+        public Transaction(Guid accountId, Guid? pendingApprovalTransactionId, Guid categoryId, decimal amount, string? description, TransactionType transactionType, decimal? exchangeRate, Guid? goalId)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
@@ -39,6 +40,7 @@ namespace Domain.Entities
             Date = DateTime.UtcNow;
             TransactionType = transactionType;
             ExchangeRate = exchangeRate;
+            GoalId = goalId;
         }
 
         public bool IsIncome()
@@ -57,6 +59,12 @@ namespace Domain.Entities
                 return true;
             }
             return false;
+        }
+
+        public void SetGoal(Goal goal)
+        {
+            Goal = goal;
+            GoalId = goal.Id;
         }
     }
 }

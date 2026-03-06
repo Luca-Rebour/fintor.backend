@@ -130,9 +130,51 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Fintor.api.Controllers.GoalController",
+    "Method": "CreateGoal",
+    "RelativePath": "api/goals",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createGoalDTO",
+        "Type": "Application.DTOs.Goals.CreateGoalDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.GoalController",
+    "Method": "GetAllGoals",
+    "RelativePath": "api/goals",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.GoalController",
+    "Method": "GetGoalTransactions",
+    "RelativePath": "api/goals/{goalId}/transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "goalId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
     "Method": "GetPendingApprovalTransactions",
-    "RelativePath": "api/pending-approve-transactions",
+    "RelativePath": "api/pending-approval-transactions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -142,7 +184,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
     "Method": "ApprovePendingApprovalTransaction",
-    "RelativePath": "api/pending-approve-transactions/{pendingApprovalTransactionId}/approve",
+    "RelativePath": "api/pending-approval-transactions/{pendingApprovalTransactionId}/approve",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -163,7 +205,7 @@
   {
     "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
     "Method": "CancelPendingApprovalTransaction",
-    "RelativePath": "api/pending-approve-transactions/{pendingApprovalTransactionId}/cancel",
+    "RelativePath": "api/pending-approval-transactions/{pendingApprovalTransactionId}/cancel",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -171,6 +213,27 @@
       {
         "Name": "pendingApprovalTransactionId",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
+    "Method": "ApprovePendingApprovalTransaction",
+    "RelativePath": "api/pending-approval-transactions/{pendingApprovalTransactionId}/reschedule",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pendingApprovalTransactionId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dueDate",
+        "Type": "System.DateOnly",
         "IsRequired": true
       }
     ],
@@ -200,6 +263,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.RecurringTransactionController",
+    "Method": "DeleteRecurringTransaction",
+    "RelativePath": "api/recurring-transactions/{recurringTransactionId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "recurringTransactionId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
