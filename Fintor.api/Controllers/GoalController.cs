@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Goals;
+using Application.DTOs.Transactions;
 using Application.Interfaces.UseCases.Goals;
 using Application.UseCases.Goals;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +14,13 @@ namespace Fintor.api.Controllers
     {
         private readonly IGetAllGoals _getAllGoals;
         private readonly ICreateGoal _createGoal;
+        private readonly IGetGoalTransactions _getGoalTransactions;
 
-        public GoalController(IGetAllGoals getAllGoals, ICreateGoal createGoal)
+        public GoalController(IGetAllGoals getAllGoals, ICreateGoal createGoal, IGetGoalTransactions getGoalTransactions)
         {
             _getAllGoals = getAllGoals;
             _createGoal = createGoal;
+            _getGoalTransactions = getGoalTransactions;
         }
         [HttpPost]
         [Authorize]
@@ -35,6 +38,15 @@ namespace Fintor.api.Controllers
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             List<GoalDTO> goalsDTO = await _getAllGoals.ExecuteAsync(userId);
             return Ok(goalsDTO);
+        }
+
+        [HttpGet("{goalId:guid}/transactions")]
+        [Authorize]
+        public async Task<IActionResult> GetGoalTransactions(Guid goalId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            List<TransactionDTO> transactionDTOs = await _getGoalTransactions.ExecuteAsync(goalId, userId);
+            return Ok(transactionDTOs);
         }
     }
 }

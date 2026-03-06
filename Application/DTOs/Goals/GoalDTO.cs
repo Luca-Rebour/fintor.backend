@@ -19,5 +19,6 @@ namespace Application.DTOs.Goals
         public DateTime TargetDate { get; set; }
         public string AccentColor { get; set; }
         public string AccountName { get; set; }
+        public string CurrencyCode { get; set; }
     }
 }

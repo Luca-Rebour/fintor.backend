@@ -42,6 +42,7 @@ namespace Infrastructure.Repositories
                     TargetDate = g.TargetDate,
                     TargetAmount = g.TargetAmount,
                     AccountName = g.Account.Name,
+                    CurrencyCode = g.Account.Currency.Code,
                     CurrentAmount = g.Transactions.Sum(t => t.Amount)
                 })
                 .ToListAsync();
@@ -62,6 +63,7 @@ namespace Infrastructure.Repositories
                     TargetDate = g.TargetDate,
                     TargetAmount = g.TargetAmount,
                     AccountName = g.Account.Name,
+                    CurrencyCode = g.Account.Currency.Code,
                     CurrentAmount = g.Transactions.Sum(t => t.Amount)
                 })
                 .FirstOrDefaultAsync();

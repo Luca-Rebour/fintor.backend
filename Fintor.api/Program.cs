@@ -189,6 +189,8 @@ namespace Fintor.api
             // Inyeccion de dependencias UseCases de Goal
             builder.Services.AddScoped<IGetAllGoals, GetAllGoals>();
             builder.Services.AddScoped<ICreateGoal, CreateGoal>();
+            builder.Services.AddScoped<IGetGoalTransactions, GetGoalTransactions>();
+
 
 
             //Inyeccion de dependencias Services

@@ -156,6 +156,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Fintor.api.Controllers.GoalController",
+    "Method": "GetGoalTransactions",
+    "RelativePath": "api/goals/{goalId}/transactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "goalId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Fintor.api.Controllers.PendingApprovalTransactionController",
     "Method": "GetPendingApprovalTransactions",
     "RelativePath": "api/pending-approval-transactions",
