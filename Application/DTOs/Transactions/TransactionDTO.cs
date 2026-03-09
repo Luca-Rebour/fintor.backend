@@ -21,7 +21,6 @@ namespace Application.DTOs.Transactions
         public string AccountName { get; set; }
         public decimal? ExchangeRate { get; set; }
         public string CurrencyCode { get; set; }
-        public string CategoryColor { get; set; }
         public string Icon { get; set; }
         public TransactionDTO()
         {

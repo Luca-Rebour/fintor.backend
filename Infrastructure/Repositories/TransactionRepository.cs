@@ -88,15 +88,5 @@ namespace Infrastructure.Repositories
         {
             _context.Transactions.Remove(transaction);
         }
-
-        public Task<List<Transaction>> GetTransactionByGoalIdAsync(Guid goalId, Guid userId)
-        {
-            return _context.Transactions
-                .AsNoTracking()
-                .Where(t => t.GoalId == goalId && t.Account.UserId == userId)
-                .Include(t => t.Category)
-                .Include(t => t.Account)
-                .ToListAsync();
-        }
     }
 }

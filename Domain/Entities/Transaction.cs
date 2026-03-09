@@ -19,28 +19,26 @@ namespace Domain.Entities
         public Guid AccountId { get; private set; }
         public Account Account { get; private set; } = null!;
         public Guid CategoryId { get; private set; }
-        public Category Category { get; private set; } = null!;
+		public Category Category { get; private set; } = null!;
         public Guid? PendingApprovalTransactionId { get; private set; }
-        public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
-        public Guid? GoalId { get; private set; }
-        public Goal? Goal { get; private set; }
+		public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
+
 
         public Transaction()
         {
 
         }
-        public Transaction(Guid accountId, Guid? pendingApprovalTransactionId, Guid categoryId, decimal amount, string? description, TransactionType transactionType, decimal? exchangeRate, Guid? goalId)
+        public Transaction(Guid accountId, Guid? pendingApprovalTransactionId, Guid categoryId, decimal amount, string? description, TransactionType transactionType, decimal? exchangeRate)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
-            PendingApprovalTransactionId = pendingApprovalTransactionId;
+			PendingApprovalTransactionId = pendingApprovalTransactionId;
             CategoryId = categoryId;
             Amount = amount;
             Description = description;
             Date = DateTime.UtcNow;
             TransactionType = transactionType;
             ExchangeRate = exchangeRate;
-            GoalId = goalId;
         }
 
         public bool IsIncome()
@@ -60,16 +58,5 @@ namespace Domain.Entities
             }
             return false;
         }
-
-        public void SetGoal(Goal goal)
-        {
-            Goal = goal;
-            GoalId = goal.Id;
-        }
-
-        public bool IsRecurringTransaction()
-        {
-            return PendingApprovalTransaction != null;
-        }
     }
-    }
+}

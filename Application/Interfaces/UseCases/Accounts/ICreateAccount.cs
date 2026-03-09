@@ -10,6 +10,6 @@ namespace Application.Interfaces.UseCases.Accounts
 {
     public interface ICreateAccount
     {
-        Task<AccountDTO> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId);
+        Task<Account> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId);
     }
 }

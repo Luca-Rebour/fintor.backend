@@ -1,4 +1,4 @@
-﻿using Application.DTOs.PendingApprovalTransactions;
+﻿using Application.DTOs;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.PendingApproveTransactions;

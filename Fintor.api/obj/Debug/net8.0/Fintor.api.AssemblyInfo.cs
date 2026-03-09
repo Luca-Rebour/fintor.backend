@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fintor.api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+304663f55e9b2297517af512a6b7c6ecdadcc97b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+305d138f4624a1ca91e57500a1ad1b2ffaa119ae")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fintor.api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fintor.api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

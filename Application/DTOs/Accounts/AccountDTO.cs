@@ -13,11 +13,8 @@ namespace Application.DTOs.Accounts
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public decimal TotalBalance { get; set; }
-        public decimal AvailableBalance { get; set; }
-        public string Icon { get; set; }
-
-        public string CurrencyCode { get; set; }
+        public decimal Balance { get; set; }
+        public Currency Currency { get; set; }
 
         public AccountDTO() { }
     }

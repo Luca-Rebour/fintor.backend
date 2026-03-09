@@ -38,6 +38,8 @@ public class RecurringTransactionHostedService : BackgroundService
 			{
 				_logger.LogError(ex, "Error running recurring transaction job");
 			}
+
+			// En dev: corré una vez y salí (ideal para test)
 			if (_env.IsDevelopment())
 				break;
 

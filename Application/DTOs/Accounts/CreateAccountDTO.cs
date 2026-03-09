@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-using Domain.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,18 +14,17 @@ namespace Application.DTOs.Accounts
         public string Name { get; set; }
         public decimal InitialBalance { get; set; }
         public decimal ExchangeRate { get; set; }
-        public string Icon { get; set; }
 
         public void Validate()
         {
             if (Name.Length > 30)
             {
-                throw new BusinessRuleException("Account name is too long. Maximum allowed length is 30 characters.", ErrorCode.ValidationError);
+                throw new ArgumentException("Account name is too long. Maximum allowed length is 30 characters.");
             }
 
             if (InitialBalance < 0)
             {
-                throw new BusinessRuleException("Initial balance cannot be negative.", ErrorCode.ValidationError);
+                throw new ArgumentException("Initial balance cannot be negative.");
             }
             }
 

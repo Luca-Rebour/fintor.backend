@@ -40,9 +40,6 @@ namespace Infrastructure.Repositories
         {
             List<PendingApprovalTransaction> pendingAprovalTransactions = await _context.PendingAprovalTransactions
                     .AsNoTracking()
-                    .Include(c => c.Category)
-                    .Include(a => a.Account)
-                        .ThenInclude(a => a.Currency)
                     .Where(p => p.Account.UserId == userId)
                     .ToListAsync();
             return pendingAprovalTransactions;
@@ -58,7 +55,6 @@ namespace Infrastructure.Repositories
         public async Task<PendingApprovalTransaction?> GetByIdToUpdateAsync(Guid id)
         {
             return await _context.PendingAprovalTransactions
-                .Include(p => p.Account)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

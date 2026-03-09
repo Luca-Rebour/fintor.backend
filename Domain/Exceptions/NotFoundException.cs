@@ -1,5 +1,4 @@
-﻿using Domain.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    public class NotFoundException : DomainException
+    public class NotFoundException : Exception
     {
-        public NotFoundException(string entityName)
-            : base($"{entityName} no encontrado.", ErrorCode.NotFound)
+        public NotFoundException(string msg)
+        : base(msg)
         {
         }
     }

@@ -27,9 +27,6 @@ namespace Infrastructure.Repositories
         {
             return await _context.RecurringTransactions
                 .AsNoTracking()
-                .Include(r => r.Category)
-                .Include(r => r.Account)
-                    .ThenInclude(a => a.Currency)
                 .Where(r => r.Account.UserId == userId)
 				.ToListAsync();
         }
@@ -73,17 +70,5 @@ namespace Infrastructure.Repositories
             return recurrents;
 
 		}
-
-        public async Task<RecurringTransaction?> GetBydIdToUpdateAsync(Guid RecurringTransactionId)
-        {
-            return await _context.RecurringTransactions
-                .Include(r => r.Account)
-				.FirstOrDefaultAsync(r => r.Id == RecurringTransactionId);
-		}
-
-		public void Delete(RecurringTransaction recurringTransaction)
-		{
-			_context.RecurringTransactions.Remove(recurringTransaction);
-		}
-	}
+    }
 }

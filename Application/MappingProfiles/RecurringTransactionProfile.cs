@@ -13,13 +13,7 @@ namespace Application.MappingProfiles
     public class RecurringTransactionProfile : Profile
     {
         public RecurringTransactionProfile() {
-            CreateMap<RecurringTransaction, RecurringTransactionDTO>()
-                    .ForMember(dest => dest.Icon,
-                        opt => opt.MapFrom(src => src.Category.Icon))
-                    .ForMember(dest => dest.AccountName,
-                        opt => opt.MapFrom(src => src.Account.Name))
-                    .ForMember(dest => dest.CurrencyCode,
-                        opt => opt.MapFrom(src => src.Account.Currency.Code));
+            CreateMap<RecurringTransaction, RecurringTransactionDTO>();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.PendingApprovalTransactions
+namespace Application.DTOs
 {
     public class PendingApprovalTransactionDTO
     {
@@ -18,7 +18,7 @@ namespace Application.DTOs.PendingApprovalTransactions
         public decimal Amount { get; set; }
         public string CategoryName { get; set; } = null!;
         public string Icon { get; set; } = null!;
-        //public RecurringTransaction RecurringTransaction { get; set; } = null!;
+        public RecurringTransaction RecurringTransaction { get; set; } = null!;
         public string AccountName { get; set; } = null!;
         public string CurrencyCode { get; set; } = null!;
 
@@ -35,9 +35,9 @@ namespace Application.DTOs.PendingApprovalTransactions
             Amount = pending.Amount;
             CategoryName = pending.Category.Name;
             Icon = pending.Category.Icon;
-            //RecurringTransaction = pending.RecurringTransaction;
-            AccountName = pending.Account.Name;
-            CurrencyCode = pending.Account.Currency.Code;
+            RecurringTransaction = pending.RecurringTransaction;
+            AccountName = pending.RecurringTransaction.Account.Name;
+            CurrencyCode = pending.RecurringTransaction.Account.Currency.Code;
         }
     }
 }

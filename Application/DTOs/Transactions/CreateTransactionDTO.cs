@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
-using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +17,15 @@ namespace Application.DTOs.Transactions
         public string Description { get; set; }
         public decimal? ExchangeRate { get; set; }
         public TransactionType TransactionType { get; set; }
-        public Guid? GoalId { get; set; }
 
         public CreateTransactionDTO() { }
 
         public void Validate()
         {
             if (Amount <= 0)
-                throw new BusinessRuleException("El monto debe ser mayor a cero.", ErrorCode.ValidationError);
+                throw new ArgumentException("El monto debe ser mayor a cero.");
             if (string.IsNullOrWhiteSpace(Description))
-                throw new BusinessRuleException("La descripción no puede estar vacía.", ErrorCode.ValidationError);
+                throw new ArgumentException("La descripción no puede estar vacía.");
         }
 
     }

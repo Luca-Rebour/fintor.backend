@@ -7,24 +7,18 @@ using System.Security.Claims;
 namespace Fintor.api.Controllers
 {
     [ApiController]
-    [Route("api/pending-approval-transactions")]
+    [Route("api/pending-approve-transactions")]
     public class PendingApprovalTransactionController : Controller
     {
         private readonly IApprovePendingApprovalTransaction _approvePendingApprovalTransaction;
         private readonly ICancelPendingApprovalTransaction _cancelPendingApprovalTransaction;
         private readonly IGetPendingApprovalTransactions _getPendingApprovalTransactions;
-        private readonly IReschedulePendingApprovalTransaction _reschedulePendingApprovalTransaction;
 
-        public PendingApprovalTransactionController(
-            IApprovePendingApprovalTransaction approvePendingApprovalTransaction, 
-            ICancelPendingApprovalTransaction cancelPendingApprovalTransaction, 
-            IGetPendingApprovalTransactions getPendingApprovalTransactions, 
-            IReschedulePendingApprovalTransaction reschedulePendingApprovalTransaction)
+        public PendingApprovalTransactionController(IApprovePendingApprovalTransaction approvePendingApprovalTransaction, ICancelPendingApprovalTransaction cancelPendingApprovalTransaction, IGetPendingApprovalTransactions getPendingApprovalTransactions)
         {
             _approvePendingApprovalTransaction = approvePendingApprovalTransaction;
             _cancelPendingApprovalTransaction = cancelPendingApprovalTransaction;
             _getPendingApprovalTransactions = getPendingApprovalTransactions;
-            _reschedulePendingApprovalTransaction = reschedulePendingApprovalTransaction;
         }
 
         [HttpPost("{pendingApprovalTransactionId:guid}/approve")]
@@ -32,14 +26,6 @@ namespace Fintor.api.Controllers
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             await _approvePendingApprovalTransaction.ExecuteAsync(pendingApprovalTransactionId, userId, exchangeRate);
-            return NoContent();
-        }
-
-        [HttpPost("{pendingApprovalTransactionId:guid}/reschedule")]
-        public async Task<IActionResult> ApprovePendingApprovalTransaction([FromRoute] Guid pendingApprovalTransactionId, [FromBody] DateOnly dueDate)
-        {
-            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            await _reschedulePendingApprovalTransaction.ExecuteAsync(pendingApprovalTransactionId, userId, dueDate);
             return NoContent();
         }
 
@@ -53,7 +39,6 @@ namespace Fintor.api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetPendingApprovalTransactions()
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);

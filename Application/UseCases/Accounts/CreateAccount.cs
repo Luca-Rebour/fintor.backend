@@ -41,7 +41,7 @@ namespace Application.UseCases.Accounts
             _currencyRepository = currencyRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<AccountDTO> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
+        public async Task<Account> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
         {
             createAccountDTO.Validate();
             Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
@@ -51,18 +51,16 @@ namespace Application.UseCases.Accounts
                 _currencyRepository.CreateCurrency(currency);
             }
 
-            Account newAccount = _mapper.Map<Account>(createAccountDTO);
-            newAccount.SetCurrency(currency.Id);
-            newAccount.SetUser(userId);
+            Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name);
             if (createAccountDTO.InitialBalance > 0)
             {
                 Category category = await _categoryRepository.GetCategoryByName("General", userId);
-                Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate, null);
+                Transaction initialBalanceTransaction = new Transaction(newAccount.Id, null, category.Id, createAccountDTO.InitialBalance, "Initial balance", TransactionType.Income, createAccountDTO.ExchangeRate);
                 _transactionRepository.CreateTransaction(initialBalanceTransaction);
             }
             _accountRepository.CreateAccount(newAccount);
             await _unitOfWork.SaveChangesAsync();
-            return _mapper.Map<AccountDTO>(newAccount);
+            return newAccount;
         }
     }
 }

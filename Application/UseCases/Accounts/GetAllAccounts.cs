@@ -32,8 +32,23 @@ namespace Application.UseCases.Accounts
 
         public async Task<IEnumerable<AccountDTO>> ExecuteAsync(Guid userId)
         {
-            List<AccountDTO> accounts = await _accountRepository.GetAllAccountsAsync(userId);
-            return accounts;
+            List<Account> accounts = await _accountRepository.GetAllAccountsAsync(userId);
+            List<AccountDTO> ret = _mapper.Map<List<AccountDTO>>(accounts);
+
+            foreach (AccountDTO accountDto in ret)
+            {
+                List<TransactionDTO> transactions = await _getAccountTransactions.ExecuteAsync(accountDto.Id);
+                List<RecurringTransactionDTO> recurringTransactions = await _getAccountRecurringTransactions.ExecuteAsync(accountDto.Id);
+                accountDto.Balance = transactions.Any()
+                    ? transactions
+                        .Where(m => m.TransactionType == TransactionType.Income).Sum(m => m.Amount)
+                        - transactions.Where(m => m.TransactionType == TransactionType.Expense).Sum(m => m.Amount)
+                    : 0;
+
+            }
+
+
+            return ret;
         }
     }
 }

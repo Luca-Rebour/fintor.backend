@@ -5,7 +5,6 @@ using Application.Interfaces.UseCases.PendingApproveTransactions;
 using Application.Interfaces.UseCases.Transactions;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +33,15 @@ namespace Application.UseCases.PendingApprovalTransactions
             
             if (pendingApprovalTransaction == null)
             {
-                throw new NotFoundException("Pending approval transaction");
+                throw new KeyNotFoundException("Pending approval transaction not found");
             }
 
-            if (!pendingApprovalTransaction.Account.UserId.Equals(userId))
+            if (!pendingApprovalTransaction.Account.UserId.Equals(_pendingApprovalTransactionRepository))
             {
-                throw new ForbiddenException("User does not have access to do the requested action");
+                throw new UnauthorizedAccessException("User does not have access to do the requested action");
             }
 
-            Transaction transaction = new Transaction(pendingApprovalTransaction.AccountId, pendingApprovalTransaction.Id, pendingApprovalTransaction.CategoryId, pendingApprovalTransaction.Amount, pendingApprovalTransaction.Description, pendingApprovalTransaction.TransactionType, exchangeRate, null);
+            Transaction transaction = new Transaction(pendingApprovalTransaction.AccountId, pendingApprovalTransaction.Id, pendingApprovalTransaction.CategoryId, pendingApprovalTransaction.Amount, pendingApprovalTransaction.Description, pendingApprovalTransaction.TransactionType, exchangeRate);
             _transactionRepository.CreateTransaction(transaction);
             pendingApprovalTransaction.Approve(DateOnly.FromDateTime(DateTime.UtcNow), transaction.Id);
             _pendingApprovalTransactionRepository.Update(pendingApprovalTransaction);

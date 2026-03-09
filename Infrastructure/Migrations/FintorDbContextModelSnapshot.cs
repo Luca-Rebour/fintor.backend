@@ -31,10 +31,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CurrencyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -117,45 +113,6 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.Goal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AccentColor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TargetAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("TargetDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("Goals");
-                });
-
             modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -196,7 +153,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("CategoryId")
@@ -346,11 +302,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<decimal?>("ExchangeRate")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<Guid?>("GoalId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("PendingApprovalTransactionId")
                         .HasColumnType("uniqueidentifier");
@@ -363,8 +315,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("GoalId");
 
                     b.ToTable("Transactions");
                 });
@@ -450,17 +400,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Goal", b =>
-                {
-                    b.HasOne("Domain.Entities.Account", "Account")
-                        .WithMany("Goals")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
                     b.HasOne("Domain.Entities.User", null)
@@ -535,7 +474,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("Domain.Entities.Account", "Account")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -546,16 +485,9 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Goal", "Goal")
-                        .WithMany("Transactions")
-                        .HasForeignKey("GoalId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.Navigation("Account");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Goal");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -567,18 +499,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("BaseCurrency");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Account", b =>
-                {
-                    b.Navigation("Goals");
-
-                    b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Goal", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.RecurringTransaction", b =>
