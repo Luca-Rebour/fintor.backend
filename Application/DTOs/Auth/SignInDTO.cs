@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enums;
+using Domain.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Users
 {
@@ -11,17 +13,17 @@ namespace Application.DTOs.Users
         {
             if (string.IsNullOrWhiteSpace(Email))
             {
-                throw new ValidationException("Email is required.");
+                throw new BusinessRuleException("Email is required.", ErrorCode.ValidationError);
             }
 
             if (!new EmailAddressAttribute().IsValid(Email))
             {
-                throw new ValidationException("Email format is invalid.");
+                throw new BusinessRuleException("Email format is invalid.", ErrorCode.ValidationError);
             }
     
             if (string.IsNullOrWhiteSpace(Password))
             {
-                throw new ValidationException("Password is required.");
+                throw new BusinessRuleException("Password is required.", ErrorCode.ValidationError);
             }
                 
         }

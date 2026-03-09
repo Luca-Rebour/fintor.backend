@@ -37,13 +37,9 @@ namespace Application.UseCases.Auth
         {
             User user = await _userRepository.GetUserByEmail(signInDTO.Email);
 
-            if (user == null) {
-                throw new InvalidCredentialException($"There is no user registered with email {signInDTO.Email}");
-            }
-
-            if(!_passwordService.VerifyPassword(user.PasswordHash, signInDTO.Password))
+            if(user == null || !_passwordService.VerifyPassword(user.PasswordHash, signInDTO.Password))
             {
-                throw new InvalidCredentialException("Invalid credentials");
+                throw new AuthenticationException("Invalid credentials");
             }
             UserDTO userDTO = _mapper.Map<UserDTO>(user);
 

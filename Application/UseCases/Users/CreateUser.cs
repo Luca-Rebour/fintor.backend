@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.Users;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using Fintor.api.Exceptions;
 
 namespace Application.UseCases.Users
@@ -38,7 +39,7 @@ namespace Application.UseCases.Users
             dto.Validate();
             if (await _userRepository.GetUserByEmail(dto.Email) != null)
             {
-                throw new EmailAlreadyExistsException(dto.Email); 
+                throw new EmailAlreadyInUseException(); 
             }
             Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(dto.BaseCurrencyCode);
             if (currency == null)

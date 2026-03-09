@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
             var account = await _context.Accounts.FindAsync(accountId);
             if (account == null)
             {
-                throw new NotFoundException("Acount not found");
+                throw new NotFoundException("Acount");
             }
 
             _context.Accounts.Remove(account);

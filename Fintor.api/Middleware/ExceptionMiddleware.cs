@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Fintor.api.Exceptions;
 using System.Security.Authentication;
 using Domain.Exceptions;
+using Domain.Enums;
 
 namespace Api.Middlewares
 {
@@ -33,26 +34,50 @@ namespace Api.Middlewares
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var statusCode = ex switch
-            {
-                EmailAlreadyExistsException => StatusCodes.Status409Conflict,
-                ValidationException => StatusCodes.Status400BadRequest,
-                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                InvalidCredentialException => StatusCodes.Status401Unauthorized,
-                _ => StatusCodes.Status500InternalServerError
-            };
+            context.Response.ContentType = "application/json";
 
-            var response = new
+            int statusCode;
+            string message;
+            string? code = null;
+
+            switch (ex)
+            {
+                case ValidationException:
+                    statusCode = StatusCodes.Status400BadRequest;
+                    message = ex.Message;
+                    code = "VALIDATION_ERROR";
+                    break;
+
+                case DomainException domainEx:
+                    statusCode = StatusCodes.Status400BadRequest;
+                    message = domainEx.Message;
+                    code = domainEx.Code;
+                    break;
+
+                case UnauthorizedAccessException:
+                case InvalidCredentialException:
+                    statusCode = StatusCodes.Status401Unauthorized;
+                    message = "Credenciales inválidas.";
+                    code = "UNAUTHORIZED";
+                    break;
+
+                default:
+                    statusCode = StatusCodes.Status500InternalServerError;
+                    message = "Ocurrió un error inesperado.";
+                    code = "INTERNAL_ERROR";
+                    break;
+            }
+
+            context.Response.StatusCode = statusCode;
+
+            await context.Response.WriteAsJsonAsync(new
             {
                 statusCode,
-                message = ex.Message
-            };
-
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = statusCode;
-            return context.Response.WriteAsJsonAsync(response);
+                message,
+                code
+            });
         }
     }
 }
