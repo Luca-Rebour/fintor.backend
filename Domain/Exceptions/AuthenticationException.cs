@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    public class NotFoundException : DomainException
+    public class AuthenticationException : DomainException
     {
-        public NotFoundException(string entityName)
-            : base($"{entityName} no encontrado.", ErrorCode.NotFound)
+        public AuthenticationException()
+            : base("Credenciales inválidas.", ErrorCode.InvalidCredentials)
         {
         }
     }

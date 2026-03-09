@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Domain.Entities
 {
@@ -75,7 +76,7 @@ namespace Domain.Entities
                 Frequency.Monthly => date.AddMonths(1),
                 Frequency.Quarterly => date.AddMonths(3),
                 Frequency.Yearly => date.AddYears(1),
-                _ => throw new NotSupportedException("Frecuencia no soportada")
+                _ => throw new BusinessRuleException("Frecuencia no soportada", ErrorCode.ValidationError)
             };
     }
 }

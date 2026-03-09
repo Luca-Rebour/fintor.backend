@@ -31,6 +31,10 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CurrencyId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -449,7 +453,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Goal", b =>
                 {
                     b.HasOne("Domain.Entities.Account", "Account")
-                        .WithMany()
+                        .WithMany("Goals")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -531,7 +535,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("Domain.Entities.Account", "Account")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -563,6 +567,13 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("BaseCurrency");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Account", b =>
+                {
+                    b.Navigation("Goals");
+
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Goal", b =>

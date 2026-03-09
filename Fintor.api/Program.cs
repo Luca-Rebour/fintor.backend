@@ -157,6 +157,8 @@ namespace Fintor.api
             builder.Services.AddScoped<ICreateAccount, CreateAccount>();
             builder.Services.AddScoped<IDeleteAccount, DeleteAccount>();
             builder.Services.AddScoped<IGetAllAccounts, GetAllAccounts>();
+            builder.Services.AddScoped<IAccountDetail, AccountDetail>();
+
 
             // Inyeccion de dependencias UseCases de Transaction
             builder.Services.AddScoped<ICreateTransaction, CreateTransaction>();

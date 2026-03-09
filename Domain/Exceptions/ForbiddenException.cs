@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    public class NotFoundException : DomainException
+    public class ForbiddenException : DomainException
     {
-        public NotFoundException(string entityName)
-            : base($"{entityName} no encontrado.", ErrorCode.NotFound)
+        public ForbiddenException(string message)
+            : base(message, ErrorCode.Forbidden)
         {
         }
     }
 }
+

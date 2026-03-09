@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Enums;
+using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -41,7 +43,7 @@ namespace Application.DTOs.Users
                 errors.Add("Birth date is required.");
 
             if (errors.Any())
-                throw new ValidationException(string.Join(" ", errors));
+                throw new BusinessRuleException(string.Join(" ", errors), ErrorCode.ValidationError);
         }
 
 

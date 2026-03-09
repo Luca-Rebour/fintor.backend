@@ -9,7 +9,6 @@ using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,12 +37,12 @@ namespace Application.UseCases.Auth
             User user = await _userRepository.GetUserByEmail(signInDTO.Email);
 
             if (user == null) {
-                throw new InvalidCredentialException($"There is no user registered with email {signInDTO.Email}");
+                throw new AuthenticationException();
             }
 
             if(!_passwordService.VerifyPassword(user.PasswordHash, signInDTO.Password))
             {
-                throw new InvalidCredentialException("Invalid credentials");
+                throw new AuthenticationException();
             }
             UserDTO userDTO = _mapper.Map<UserDTO>(user);
 

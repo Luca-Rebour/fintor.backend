@@ -26,7 +26,9 @@ namespace Application.MappingProfiles
                 .ForMember(dest => dest.CurrencyCode,
                     opt => opt.MapFrom(src => src.Account.Currency.Code))
                 .ForMember(dest => dest.Icon,
-                    opt => opt.MapFrom(src => src.Category.Icon));
+                    opt => opt.MapFrom(src => src.Category.Icon))
+                .ForMember(dest => dest.CategoryColor,
+                    opt => opt.MapFrom(src => src.Category.Color));
         }
     }
 }

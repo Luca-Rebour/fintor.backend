@@ -18,12 +18,18 @@ namespace Fintor.api.Controllers
         private readonly IDeleteAccount _deleteAccount;
         private readonly IGetAllAccounts _getAllAccounts;
         private readonly IGetAccountTransactions _getAccountTransactions;
-        public AccountController(ICreateAccount createAccount, IDeleteAccount deleteAccount, IGetAllAccounts getAllAccounts, IGetAccountTransactions getAccountTransactions)
+        private readonly IAccountDetail _accountDetail;
+        public AccountController(ICreateAccount createAccount, 
+            IDeleteAccount deleteAccount, 
+            IGetAllAccounts getAllAccounts, 
+            IGetAccountTransactions getAccountTransactions,
+            IAccountDetail accountDetail)
         {
             _createAccount = createAccount;
             _deleteAccount = deleteAccount;
             _getAllAccounts = getAllAccounts;
             _getAccountTransactions = getAccountTransactions;
+            _accountDetail = accountDetail;
         }
 
         [HttpPost]
@@ -31,7 +37,7 @@ namespace Fintor.api.Controllers
         public async Task<IActionResult> CreateAccount(CreateAccountDTO createAccountDTO)
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            Account account = await _createAccount.ExecuteAsync(createAccountDTO, userId);
+            AccountDTO account = await _createAccount.ExecuteAsync(createAccountDTO, userId);
             return Ok(account);
         }
 
@@ -39,7 +45,7 @@ namespace Fintor.api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
-            _deleteAccount.ExecuteAsync(accountId);
+            await _deleteAccount.ExecuteAsync(accountId);
             return NoContent();
         }
 
@@ -58,6 +64,15 @@ namespace Fintor.api.Controllers
         {
             IEnumerable<TransactionDTO> transactions = await _getAccountTransactions.ExecuteAsync(accountId);
             return Ok(transactions);
+        }
+
+        [HttpGet("{accountId:guid}/detail")]
+        [Authorize]
+        public async Task<IActionResult> GetAccountDetail([FromRoute] Guid accountId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            AccountDetailDTO accountDetailDTO = await _accountDetail.ExecuteAsync(accountId, userId);
+            return Ok(accountDetailDTO);
         }
     }
 }

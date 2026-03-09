@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Enums;
+using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,23 +24,23 @@ namespace Application.DTOs.Goals
         {
             if (string.IsNullOrEmpty(Title))
             {
-                throw new ArgumentException("Title is required.");
+                throw new BusinessRuleException("Title is required.", ErrorCode.ValidationError);
             }
             if (TargetAmount <= 0)
             {
-                throw new ArgumentException("Target amount must be greater than zero.");
+                throw new BusinessRuleException("Target amount must be greater than zero.", ErrorCode.ValidationError);
             }
             if (CurrentAmount < 0)
             {
-                throw new ArgumentException("Current amount cannot be negative.");
+                throw new BusinessRuleException("Current amount cannot be negative.", ErrorCode.ValidationError);
             }
             if (string.IsNullOrEmpty(Icon))
             {
-                throw new ArgumentException("Icon is required.");
+                throw new BusinessRuleException("Icon is required.", ErrorCode.ValidationError);
             }
             if (string.IsNullOrEmpty(AccentColor))
             {
-                throw new ArgumentException("Accent color is required.");
+                throw new BusinessRuleException("Accent color is required.", ErrorCode.ValidationError);
             }
         }
     }

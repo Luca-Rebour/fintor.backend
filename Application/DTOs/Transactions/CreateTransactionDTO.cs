@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace Application.DTOs.Transactions
         public void Validate()
         {
             if (Amount <= 0)
-                throw new ArgumentException("El monto debe ser mayor a cero.");
+                throw new BusinessRuleException("El monto debe ser mayor a cero.", ErrorCode.ValidationError);
             if (string.IsNullOrWhiteSpace(Description))
-                throw new ArgumentException("La descripción no puede estar vacía.");
+                throw new BusinessRuleException("La descripción no puede estar vacía.", ErrorCode.ValidationError);
         }
 
     }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.UseCases.Accounts
 {
-    public interface ICreateAccount
+    public interface IAccountDetail
     {
-        Task<AccountDTO> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId);
+        Task<AccountDetailDTO> ExecuteAsync(Guid accountId, Guid userId);
     }
 }

@@ -737,3 +737,4 @@ C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.genruntimeconfig.cache
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\ref\Fintor.api.dll
 C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Luca Dev\Desktop\fintor.backend\Fintor.api\obj\Debug\net8.0\Fintor.api.MvcApplicationPartsAssemblyInfo.cs

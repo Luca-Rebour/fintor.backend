@@ -19,9 +19,9 @@ namespace Domain.Entities
         public Guid AccountId { get; private set; }
         public Account Account { get; private set; } = null!;
         public Guid CategoryId { get; private set; }
-		public Category Category { get; private set; } = null!;
+        public Category Category { get; private set; } = null!;
         public Guid? PendingApprovalTransactionId { get; private set; }
-		public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
+        public PendingApprovalTransaction? PendingApprovalTransaction { get; private set; }
         public Guid? GoalId { get; private set; }
         public Goal? Goal { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Domain.Entities
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
-			PendingApprovalTransactionId = pendingApprovalTransactionId;
+            PendingApprovalTransactionId = pendingApprovalTransactionId;
             CategoryId = categoryId;
             Amount = amount;
             Description = description;
@@ -66,5 +66,10 @@ namespace Domain.Entities
             Goal = goal;
             GoalId = goal.Id;
         }
+
+        public bool IsRecurringTransaction()
+        {
+            return PendingApprovalTransaction != null;
+        }
     }
-}
+    }

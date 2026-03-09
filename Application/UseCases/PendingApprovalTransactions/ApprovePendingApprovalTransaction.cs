@@ -5,6 +5,7 @@ using Application.Interfaces.UseCases.PendingApproveTransactions;
 using Application.Interfaces.UseCases.Transactions;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +34,12 @@ namespace Application.UseCases.PendingApprovalTransactions
             
             if (pendingApprovalTransaction == null)
             {
-                throw new KeyNotFoundException("Pending approval transaction not found");
+                throw new NotFoundException("Pending approval transaction");
             }
 
             if (!pendingApprovalTransaction.Account.UserId.Equals(userId))
             {
-                throw new UnauthorizedAccessException("User does not have access to do the requested action");
+                throw new ForbiddenException("User does not have access to do the requested action");
             }
 
             Transaction transaction = new Transaction(pendingApprovalTransaction.AccountId, pendingApprovalTransaction.Id, pendingApprovalTransaction.CategoryId, pendingApprovalTransaction.Amount, pendingApprovalTransaction.Description, pendingApprovalTransaction.TransactionType, exchangeRate, null);

@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace Domain.Entities
          public void Approve(DateOnly confirmedAt, Guid transactionId)
          {
                 if (Status != PendingTransactionStatus.Pending)
-                    throw new InvalidOperationException("Only pending transactions can be approved.");
+                    throw new BusinessRuleException("Only pending transactions can be approved.", ErrorCode.ValidationError);
     
                 Status = PendingTransactionStatus.Approved;
                 ConfirmedAt = confirmedAt;
@@ -54,7 +55,7 @@ namespace Domain.Entities
         public void Cancel()
         {
             if (Status == PendingTransactionStatus.Approved)
-                throw new InvalidOperationException("Approved transactions cannot be rejected.");
+                throw new BusinessRuleException("Approved transactions cannot be rejected.", ErrorCode.ValidationError);
     
             Status = PendingTransactionStatus.Cancelled;
         }

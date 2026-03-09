@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.RecurringTransactions;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,12 @@ namespace Application.UseCases.RecurringTransactions
             RecurringTransaction? recurringTransaction = await _recurringTransactionRepository.GetBydIdToUpdateAsync(recurringTransactionId);
             if(recurringTransaction == null)
             {
-                throw new KeyNotFoundException("Recurring transaction not found.");
+                throw new NotFoundException("Recurring transaction");
             }
 
             if (!recurringTransaction.Account.UserId.Equals(userId))
             {
-                throw new UnauthorizedAccessException("The user does not have access to the requested action.");
+                throw new ForbiddenException("The user does not have access to the requested action.");
             }
             _recurringTransactionRepository.Delete(recurringTransaction);
             await _unitOfWork.SaveChangesAsync();

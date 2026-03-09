@@ -105,7 +105,7 @@ namespace Infrastructure
                     .OnDelete(DeleteBehavior.Restrict);
 
                 builder.HasOne(m => m.Account)
-                   .WithMany()
+                   .WithMany(a => a.Transactions)
                    .HasForeignKey(m => m.AccountId)
                    .OnDelete(DeleteBehavior.Restrict);
 
@@ -286,7 +286,7 @@ namespace Infrastructure
                        .OnDelete(DeleteBehavior.Cascade);
 
                 builder.HasOne(g => g.Account)
-                       .WithMany()
+                       .WithMany(a => a.Goals)
                        .HasForeignKey(g => g.AccountId)
                        .OnDelete(DeleteBehavior.Restrict);
 
