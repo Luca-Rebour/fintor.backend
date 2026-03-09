@@ -36,14 +36,24 @@ namespace Infrastructure
                 builder.HasKey(a => a.Id);
 
                 builder.HasOne(a => a.User)
-                   .WithMany()
-                   .HasForeignKey(a => a.UserId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                       .WithMany()
+                       .HasForeignKey(a => a.UserId)
+                       .OnDelete(DeleteBehavior.Restrict);
 
                 builder.HasOne(a => a.Currency)
-                   .WithMany()
-                   .HasForeignKey(a => a.CurrencyId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                       .WithMany()
+                       .HasForeignKey(a => a.CurrencyId)
+                       .OnDelete(DeleteBehavior.Restrict);
+
+                builder.HasMany(a => a.Transactions)
+                       .WithOne(t => t.Account)
+                       .HasForeignKey(t => t.AccountId)
+                       .OnDelete(DeleteBehavior.Restrict);
+
+                builder.HasMany(a => a.Goals)
+                       .WithOne(g => g.Account)
+                       .HasForeignKey(g => g.AccountId)
+                       .OnDelete(DeleteBehavior.Restrict);
 
                 builder.Property(a => a.Name)
                        .IsRequired()
@@ -104,11 +114,6 @@ namespace Infrastructure
                     .HasForeignKey(m => m.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                builder.HasOne(m => m.Account)
-                   .WithMany()
-                   .HasForeignKey(m => m.AccountId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
                 builder.HasOne(m => m.Goal)
                    .WithMany(g => g.Transactions)
                    .HasForeignKey(m => m.GoalId)
@@ -125,6 +130,7 @@ namespace Infrastructure
 
                 builder.Property(m => m.TransactionType)
                        .IsRequired();
+
             });
 
             modelBuilder.Entity<Notification>(builder =>
@@ -284,11 +290,6 @@ namespace Infrastructure
                        .WithOne(g => g.Goal)
                        .HasForeignKey(g => g.GoalId)
                        .OnDelete(DeleteBehavior.Cascade);
-
-                builder.HasOne(g => g.Account)
-                       .WithMany()
-                       .HasForeignKey(g => g.AccountId)
-                       .OnDelete(DeleteBehavior.Restrict);
 
                 builder.Property(x => x.TargetAmount).HasPrecision(18, 2);
             });

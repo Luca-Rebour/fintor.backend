@@ -13,15 +13,15 @@ namespace Application.DTOs.Transactions
     {
         public Guid Id { get; set; }
         public decimal Amount { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public TransactionType TransactionType { get; set; }
         public bool IsRecurringTransaction { get; set; }
-        public string CategoryName { get; set; }
-        public string AccountName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
+        public string AccountName { get; set; } = string.Empty;
         public decimal? ExchangeRate { get; set; }
-        public string CurrencyCode { get; set; }
-        public string Icon { get; set; }
+        public string CurrencyCode { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
         public TransactionDTO()
         {
 

@@ -11,7 +11,7 @@ namespace Application.Interfaces.Repositories
     public interface IUserRepository
     {
         void CreateUser(User user);
-        Task<User> GetUserByEmail(string email);
+        Task<User?> GetUserByEmail(string email);
         Task<User> GetUserById(Guid id);
     }
 }

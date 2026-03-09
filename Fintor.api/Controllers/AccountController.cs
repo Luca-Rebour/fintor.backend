@@ -3,9 +3,7 @@ using Application.DTOs.Transactions;
 using Application.Interfaces.UseCases.Accounts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Fintor.api.Controllers
@@ -18,12 +16,14 @@ namespace Fintor.api.Controllers
         private readonly IDeleteAccount _deleteAccount;
         private readonly IGetAllAccounts _getAllAccounts;
         private readonly IGetAccountTransactions _getAccountTransactions;
-        public AccountController(ICreateAccount createAccount, IDeleteAccount deleteAccount, IGetAllAccounts getAllAccounts, IGetAccountTransactions getAccountTransactions)
+        private readonly IGetAccountDetail _getAccountDetail;
+        public AccountController(ICreateAccount createAccount, IDeleteAccount deleteAccount, IGetAllAccounts getAllAccounts, IGetAccountTransactions getAccountTransactions, IGetAccountDetail getAccountDetail)
         {
             _createAccount = createAccount;
             _deleteAccount = deleteAccount;
             _getAllAccounts = getAllAccounts;
             _getAccountTransactions = getAccountTransactions;
+            _getAccountDetail = getAccountDetail;
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace Fintor.api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteAccount(Guid accountId)
         {
-            _deleteAccount.ExecuteAsync(accountId);
+            await _deleteAccount.ExecuteAsync(accountId);
             return NoContent();
         }
 
@@ -48,7 +48,7 @@ namespace Fintor.api.Controllers
         public async Task<IActionResult> GetAllAccounts()
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            IEnumerable<AccountDTO> accounts = await _getAllAccounts.ExecuteAsync(userId);
+            IEnumerable<GetAccountDTO> accounts = await _getAllAccounts.ExecuteAsync(userId);
             return Ok(accounts);
         }
 
@@ -58,6 +58,15 @@ namespace Fintor.api.Controllers
         {
             IEnumerable<TransactionDTO> transactions = await _getAccountTransactions.ExecuteAsync(accountId);
             return Ok(transactions);
+        }
+
+        [HttpGet("{accountId:guid}/detail")]
+        [Authorize]
+        public async Task<IActionResult> GetAccountDetail(Guid accountId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            AccountDetailDTO accountDetail = await _getAccountDetail.ExecuteAsync(accountId, userId);
+            return Ok(accountDetail);
         }
     }
 }

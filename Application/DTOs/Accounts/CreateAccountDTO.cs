@@ -13,16 +13,32 @@ namespace Application.DTOs.Accounts
 {
     public class CreateAccountDTO
     {
-        public string CurrencyCode { get; set; }
-        public string Name { get; set; }
+        public string CurrencyCode { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public decimal InitialBalance { get; set; }
         public decimal ExchangeRate { get; set; }
+        public string Icon { get; set; } = string.Empty;
 
         public void Validate()
         {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                throw new BusinessRuleException("Account name is required.", ErrorCode.ValidationError);
+            }
+
             if (Name.Length > 30)
             {
                 throw new BusinessRuleException("Account name is too long. Maximum allowed length is 30 characters.", ErrorCode.ValidationError);
+            }
+
+            if (string.IsNullOrWhiteSpace(CurrencyCode))
+            {
+                throw new BusinessRuleException("Currency code is required.", ErrorCode.ValidationError);
+            }
+
+            if (CurrencyCode.Length > 5)
+            {
+                throw new BusinessRuleException("Currency code is too long. Maximum allowed length is 5 characters.", ErrorCode.ValidationError);
             }
 
             if (InitialBalance < 0)

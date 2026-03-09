@@ -35,7 +35,8 @@ namespace Application.UseCases.Auth
         }
         public async Task<LoginResponseDTO> ExecuteAsync(SignInDTO signInDTO)
         {
-            User user = await _userRepository.GetUserByEmail(signInDTO.Email);
+            signInDTO.Validate();
+            User? user = await _userRepository.GetUserByEmail(signInDTO.Email);
 
             if(user == null || !_passwordService.VerifyPassword(user.PasswordHash, signInDTO.Password))
             {

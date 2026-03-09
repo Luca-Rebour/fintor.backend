@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Accounts;
-using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.UseCases.Accounts
 {
-    public interface IGetAllAccounts
+    public interface IGetAccountDetail
     {
-        public Task<IEnumerable<GetAccountDTO>> ExecuteAsync(Guid userId);
+        Task<AccountDetailDTO> ExecuteAsync(Guid accountId, Guid userId);
     }
 }

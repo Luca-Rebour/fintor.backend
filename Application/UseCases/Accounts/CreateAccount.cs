@@ -44,14 +44,14 @@ namespace Application.UseCases.Accounts
         public async Task<Account> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
         {
             createAccountDTO.Validate();
-            Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
+            Currency? currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
             if (currency == null)
             {
                 currency = new Currency(createAccountDTO.CurrencyCode);
                 _currencyRepository.CreateCurrency(currency);
             }
 
-            Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name);
+            Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name, createAccountDTO.Icon);
             if (createAccountDTO.InitialBalance > 0)
             {
                 Category category = await _categoryRepository.GetCategoryByName("General", userId);
