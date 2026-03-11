@@ -75,25 +75,25 @@ namespace Infrastructure.Repositories
                     Name = a.Name,
                     CurrencyCode = a.Currency.Code,
 
-                    TotalBalance = a.Transactions
-                        .Where(t => t.TransactionType == TransactionType.Income)
-                        .Sum(t => (decimal?)t.Amount) ?? 0m
-                        - 
-                        a.Transactions
-                            .Where(t => t.TransactionType == TransactionType.Expense)
-                            .Sum(t => (decimal?)t.Amount) ?? 0m
-                        ,
-
-                    AllocatedToGoalsBalance = a.Goals
-                        .SelectMany(g => g.Transactions)
-                        .Where(t => t.TransactionType == TransactionType.Income)
-                        .Sum(t => (decimal?)t.Amount) ?? 0m 
+                    TotalBalance =
+                        (a.Transactions
+                            .Where(t => t.TransactionType == TransactionType.Income)
+                            .Sum(t => (decimal?)t.Amount) ?? 0m)
                         -
-                         a.Goals
-                        .SelectMany(g => g.Transactions)
-                        .Where(t => t.TransactionType == TransactionType.Expense)
-                        .Sum(t => (decimal?)t.Amount) ?? 0m
-                        ,
+                        (a.Transactions
+                            .Where(t => t.TransactionType == TransactionType.Expense)
+                            .Sum(t => (decimal?)t.Amount) ?? 0m),
+
+                    AllocatedToGoalsBalance =
+                        (a.Goals
+                            .SelectMany(g => g.Transactions)
+                            .Where(t => t.TransactionType == TransactionType.Income)
+                            .Sum(t => (decimal?)t.Amount) ?? 0m)
+                        -
+                        (a.Goals
+                            .SelectMany(g => g.Transactions)
+                            .Where(t => t.TransactionType == TransactionType.Expense)
+                            .Sum(t => (decimal?)t.Amount) ?? 0m),
 
                     MonthlyIncome = a.Transactions
                         .Where(t => t.Date >= startOfMonth &&
@@ -107,15 +107,15 @@ namespace Infrastructure.Repositories
                                     t.TransactionType == TransactionType.Expense)
                         .Sum(t => (decimal?)t.Amount) ?? 0m,
 
-                    AvailableBalance = a.Transactions
-                        .Where(t => t.TransactionType == TransactionType.Income)
-                        .Where(t => t.GoalId == null)
-                        .Sum(t => (decimal?)t.Amount) ?? 0m
+                    AvailableBalance =
+                        (a.Transactions
+                            .Where(t => t.TransactionType == TransactionType.Income)
+                            .Where(t => t.GoalId == null)
+                            .Sum(t => (decimal?)t.Amount) ?? 0m)
                         -
-                        a.Transactions
+                        (a.Transactions
                             .Where(t => t.TransactionType == TransactionType.Expense)
-                            .Sum(t => (decimal?)t.Amount) ?? 0m
-                            ,
+                            .Sum(t => (decimal?)t.Amount) ?? 0m),
 
                     Transactions = a.Transactions
                         .OrderByDescending(t => t.Date)

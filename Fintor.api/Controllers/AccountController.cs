@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Accounts;
 using Application.DTOs.Transactions;
 using Application.Interfaces.UseCases.Accounts;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -31,7 +30,7 @@ namespace Fintor.api.Controllers
         public async Task<IActionResult> CreateAccount(CreateAccountDTO createAccountDTO)
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            Account account = await _createAccount.ExecuteAsync(createAccountDTO, userId);
+            GetAccountDTO account = await _createAccount.ExecuteAsync(createAccountDTO, userId);
             return Ok(account);
         }
 
