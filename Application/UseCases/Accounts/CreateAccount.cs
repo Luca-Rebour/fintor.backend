@@ -41,17 +41,17 @@ namespace Application.UseCases.Accounts
             _currencyRepository = currencyRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Account> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
+        public async Task<GetAccountDTO> ExecuteAsync(CreateAccountDTO createAccountDTO, Guid userId)
         {
             createAccountDTO.Validate();
-            Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
+            Currency? currency = await _currencyRepository.GetCurrencyByCodeAsync(createAccountDTO.CurrencyCode);
             if (currency == null)
             {
                 currency = new Currency(createAccountDTO.CurrencyCode);
                 _currencyRepository.CreateCurrency(currency);
             }
 
-            Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name);
+            Account newAccount = new Account(userId, currency.Id, createAccountDTO.Name, createAccountDTO.Icon);
             if (createAccountDTO.InitialBalance > 0)
             {
                 Category category = await _categoryRepository.GetCategoryByName("General", userId);
@@ -60,7 +60,23 @@ namespace Application.UseCases.Accounts
             }
             _accountRepository.CreateAccount(newAccount);
             await _unitOfWork.SaveChangesAsync();
-            return newAccount;
+
+            decimal initialBalance = createAccountDTO.InitialBalance > 0 ? createAccountDTO.InitialBalance : 0m;
+
+            return new GetAccountDTO
+            {
+                Id = newAccount.Id,
+                Name = newAccount.Name,
+                Icon = newAccount.Icon,
+                Balance = initialBalance,
+                TotalBalance = initialBalance,
+                AvailableBalance = initialBalance,
+                Currency = new GetAccountsCurrencyResponseDTO
+                {
+                    Id = currency.Id,
+                    Code = currency.Code
+                }
+            };
         }
     }
 }

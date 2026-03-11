@@ -34,14 +34,14 @@ C:\Users\lucar\Desktop\Fintor\Fintor-backend\Domain\obj\Debug\net8.0\refint\Doma
 C:\Users\lucar\Desktop\Fintor\Fintor-backend\Domain\obj\Debug\net8.0\Domain.pdb
 C:\Users\lucar\Desktop\Fintor\Fintor-backend\Domain\obj\Debug\net8.0\ref\Domain.dll
 C:\Users\Luca Dev\Desktop\fintor.backend\Domain\bin\Debug\net8.0\Domain.deps.json
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\bin\Debug\net8.0\Domain.dll
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\bin\Debug\net8.0\Domain.pdb
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.sourcelink.json
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.dll
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\refint\Domain.dll
-C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.pdb
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\bin\Debug\net8.0\Domain.dll
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\bin\Debug\net8.0\Domain.pdb
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.sourcelink.json
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.dll
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\refint\Domain.dll
+c:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\Domain.pdb
 C:\Users\Luca Dev\Desktop\fintor.backend\Domain\obj\Debug\net8.0\ref\Domain.dll

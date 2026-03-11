@@ -25,6 +25,7 @@ namespace Application.UseCases.RecurringTransactions
         }
         public async Task<RecurringTransactionDTO> ExecuteAsync(CreateRecurringTransactionDTO createRecurringTransactionDTO)
         {
+            createRecurringTransactionDTO.Validate();
             RecurringTransaction recurringTransaction = new RecurringTransaction(createRecurringTransactionDTO.CategoryId, createRecurringTransactionDTO.AccountId, createRecurringTransactionDTO.Name, createRecurringTransactionDTO.Amount, createRecurringTransactionDTO.Description, createRecurringTransactionDTO.transactionType, createRecurringTransactionDTO.Frequency, createRecurringTransactionDTO.StartDate, createRecurringTransactionDTO.EndDate);
             _recurringTransactionRepository.AddAsync(recurringTransaction);
             RecurringTransactionDTO recurringTransactionDTO = _mapper.Map<RecurringTransactionDTO>(recurringTransaction);

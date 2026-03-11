@@ -5,6 +5,7 @@ using Application.Interfaces.UseCases.Goals;
 using Application.Interfaces.UseCases.Transactions;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,14 @@ namespace Application.UseCases.Goals
             _goalRepository.Add(goal);
 
             await _unitOfWork.SaveChangesAsync();
-            return await _goalRepository.GetByIdAsync(goal.Id, userId);
+
+            GoalDTO? createdGoal = await _goalRepository.GetByIdAsync(goal.Id, userId);
+            if (createdGoal == null)
+            {
+                throw new NotFoundException("Goal");
+            }
+
+            return createdGoal;
         }
     }
 }

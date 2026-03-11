@@ -41,7 +41,7 @@ namespace Application.UseCases.Users
             {
                 throw new EmailAlreadyInUseException(); 
             }
-            Currency currency = await _currencyRepository.GetCurrencyByCodeAsync(dto.BaseCurrencyCode);
+            Currency? currency = await _currencyRepository.GetCurrencyByCodeAsync(dto.BaseCurrencyCode);
             if (currency == null)
             {
                currency = new Currency(dto.BaseCurrencyCode);

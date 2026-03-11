@@ -3,6 +3,7 @@ using Application.DTOs.Reports;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,9 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async void CreateTransaction(Transaction transaction)
+        public void CreateTransaction(Transaction transaction)
         {
             _context.Transactions.Add(transaction);
-            return;
         }
 
         public async Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId)
@@ -67,21 +67,35 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Transaction?> GetTransactionAsync(Guid transactionId, Guid userId)
+        public async Task<Transaction> GetTransactionAsync(Guid transactionId, Guid userId)
         {
-            return await _context.Transactions
+            Transaction? transaction = await _context.Transactions
                 .AsNoTracking()
                 .Include(t => t.Category)
                 .Include(t => t.Account)
                 .FirstOrDefaultAsync(t => t.Id == transactionId && t.Account.UserId == userId);
+
+            if (transaction == null)
+            {
+                throw new NotFoundException("Transaction");
+            }
+
+            return transaction;
         }
 
         public async Task<Transaction> GetTrackedTransactionAsync(Guid transactionId, Guid userId)
         {
-            return await _context.Transactions
+            Transaction? transaction = await _context.Transactions
                 .Include(t => t.Category)
                 .Include(t => t.Account)
                 .FirstOrDefaultAsync(t => t.Id == transactionId && t.Account.UserId == userId);
+
+            if (transaction == null)
+            {
+                throw new NotFoundException("Transaction");
+            }
+
+            return transaction;
         }
 
         public void RemoveTransaction(Transaction transaction)

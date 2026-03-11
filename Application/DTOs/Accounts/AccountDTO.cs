@@ -12,9 +12,9 @@ namespace Application.DTOs.Accounts
     public class AccountDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public decimal Balance { get; set; }
-        public Currency Currency { get; set; }
+        public Currency Currency { get; set; } = null!;
 
         public AccountDTO() { }
     }

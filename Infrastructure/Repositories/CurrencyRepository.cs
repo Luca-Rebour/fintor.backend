@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,15 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<Currency?> GetCurrencyAsync(Guid id)
+        public async Task<Currency> GetCurrencyAsync(Guid id)
         {
-            return await _context.Currencies.FindAsync(id);
+            Currency? currency = await _context.Currencies.FindAsync(id);
+            if (currency == null)
+            {
+                throw new NotFoundException("Currency");
+            }
+
+            return currency;
         }
 
         public async Task<Currency?> GetCurrencyByCodeAsync(string code)

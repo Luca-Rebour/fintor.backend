@@ -42,6 +42,9 @@ namespace Application.DTOs.Users
             if (DateOfBirth == default)
                 errors.Add("Birth date is required.");
 
+            if (string.IsNullOrWhiteSpace(BaseCurrencyCode))
+                errors.Add("Base currency code is required.");
+
             if (errors.Any())
                 throw new BusinessRuleException(string.Join(" ", errors), ErrorCode.ValidationError);
         }

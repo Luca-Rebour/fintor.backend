@@ -43,6 +43,27 @@
   },
   {
     "ContainingType": "Fintor.api.Controllers.AccountController",
+    "Method": "GetAccountDetail",
+    "RelativePath": "api/accounts/{transactionId}/detail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "accountId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "transactionId",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Fintor.api.Controllers.AccountController",
     "Method": "GetAllTransactions",
     "RelativePath": "api/accounts/transactions",
     "HttpMethod": "GET",

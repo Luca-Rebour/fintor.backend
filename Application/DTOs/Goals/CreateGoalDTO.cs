@@ -1,44 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Application.DTOs.Goals
 {
     public class CreateGoalDTO
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public decimal TargetAmount { get; set; }
         public decimal CurrentAmount { get; set; }
-        public string Icon { get; set; }
+        public string Icon { get; set; } = string.Empty;
         public DateTime TargetDate { get; set; }
-        public string AccentColor { get; set; }
+        public string AccentColor { get; set; } = string.Empty;
         public Guid AccountId { get; set; }
         public decimal? ExchangeRate { get; set; }
 
         public void Validate()
         {
-            if (string.IsNullOrEmpty(Title))
+            if (string.IsNullOrWhiteSpace(Title))
             {
-                throw new ArgumentException("Title is required.");
+                throw new BusinessRuleException("Title is required.", ErrorCode.ValidationError);
+            }
+            if (string.IsNullOrWhiteSpace(Description))
+            {
+                throw new BusinessRuleException("Description is required.", ErrorCode.ValidationError);
             }
             if (TargetAmount <= 0)
             {
-                throw new ArgumentException("Target amount must be greater than zero.");
+                throw new BusinessRuleException("Target amount must be greater than zero.", ErrorCode.ValidationError);
             }
             if (CurrentAmount < 0)
             {
-                throw new ArgumentException("Current amount cannot be negative.");
+                throw new BusinessRuleException("Current amount cannot be negative.", ErrorCode.ValidationError);
             }
-            if (string.IsNullOrEmpty(Icon))
+            if (string.IsNullOrWhiteSpace(Icon))
             {
-                throw new ArgumentException("Icon is required.");
+                throw new BusinessRuleException("Icon is required.", ErrorCode.ValidationError);
             }
-            if (string.IsNullOrEmpty(AccentColor))
+            if (string.IsNullOrWhiteSpace(AccentColor))
             {
-                throw new ArgumentException("Accent color is required.");
+                throw new BusinessRuleException("Accent color is required.", ErrorCode.ValidationError);
+            }
+            if (AccountId == Guid.Empty)
+            {
+                throw new BusinessRuleException("Account is required.", ErrorCode.ValidationError);
+            }
+            if (TargetDate == default)
+            {
+                throw new BusinessRuleException("Target date is required.", ErrorCode.ValidationError);
             }
         }
     }
