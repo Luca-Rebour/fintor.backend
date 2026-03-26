@@ -19,6 +19,7 @@ namespace Application.Interfaces.Repositories
         Task<Transaction> GetTrackedTransactionAsync(Guid transactionId, Guid userId);
         void RemoveTransaction(Transaction transaction);
         Task<List<Transaction>> GetTransactionByGoalIdAsync(Guid goalId, Guid userId);
+        Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId);
 
 
     }

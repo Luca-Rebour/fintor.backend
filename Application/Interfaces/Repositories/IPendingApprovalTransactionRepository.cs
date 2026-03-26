@@ -16,5 +16,6 @@ namespace Application.Interfaces.Repositories
         void Update(PendingApprovalTransaction recurringTransaction);
         void DeleteAsync(PendingApprovalTransaction pendingAprovalTransaction);
         Task<List<PendingApprovalTransaction>> GetAccountPendingApprovalTransactionsAsync(Guid accountId);
+        Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId);
     }
 }

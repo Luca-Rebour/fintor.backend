@@ -29,7 +29,15 @@ namespace Api.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Excepción no controlada");
+                if (ex is UnauthorizedAccessException || ex is AuthenticationException)
+                {
+                    _logger.LogWarning(ex, "Fallo de autenticacion");
+                }
+                else
+                {
+                    _logger.LogError(ex, "Excepción no controlada");
+                }
+
                 await HandleExceptionAsync(context, ex);
             }
         }
@@ -57,7 +65,7 @@ namespace Api.Middlewares
                     break;
 
                 case UnauthorizedAccessException:
-                case InvalidCredentialException:
+                case AuthenticationException:
                     statusCode = StatusCodes.Status401Unauthorized;
                     message = "Credenciales inválidas.";
                     code = "UNAUTHORIZED";

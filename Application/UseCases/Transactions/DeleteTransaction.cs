@@ -14,15 +14,26 @@ namespace Application.UseCases.Transactions
     public class DeleteTransaction : IDeleteTransaction
     {
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IPendingApprovalTransactionRepository _pendingApprovalTransactionRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteTransaction(ITransactionRepository transactionRepository,IUnitOfWork unitOfWork)
+        public DeleteTransaction(
+            ITransactionRepository transactionRepository,
+            IPendingApprovalTransactionRepository pendingApprovalTransactionRepository,
+            IUnitOfWork unitOfWork)
         {
             _transactionRepository = transactionRepository;
+            _pendingApprovalTransactionRepository = pendingApprovalTransactionRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task ExecuteAsync(Guid transactionId, Guid userId)
         {
             Transaction transaction = await _transactionRepository.GetTrackedTransactionAsync(transactionId, userId);
+
+            if (transaction.PendingApprovalTransaction != null)
+            {
+                _pendingApprovalTransactionRepository.DeleteAsync(transaction.PendingApprovalTransaction);
+            }
+
             _transactionRepository.RemoveTransaction(transaction);
             await _unitOfWork.SaveChangesAsync();
         }

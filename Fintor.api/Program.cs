@@ -148,6 +148,7 @@ namespace Fintor.api
             // Inyeccion de dependencias UseCases de User
             builder.Services.AddScoped<ICreateUser, CreateUser>();
             builder.Services.AddScoped<IMe, Me>();
+            builder.Services.AddScoped<IChangePassword, ChangePassword>();
 
 
             // Inyeccion de dependencias UseCases de Auth
@@ -175,6 +176,7 @@ namespace Fintor.api
 			// Inyeccion de dependencias UseCases de Category
 			builder.Services.AddScoped<ICreateCategory, CreateCategory>();
             builder.Services.AddScoped<IGetAllCategories, GetAllCategories>();
+            builder.Services.AddScoped<IDeleteCategory, DeleteCategory>();
 
 
             // Inyeccion de dependencias UseCases de Report

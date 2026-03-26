@@ -88,6 +88,7 @@ namespace Infrastructure.Repositories
             Transaction? transaction = await _context.Transactions
                 .Include(t => t.Category)
                 .Include(t => t.Account)
+                .Include(t => t.PendingApprovalTransaction)
                 .FirstOrDefaultAsync(t => t.Id == transactionId && t.Account.UserId == userId);
 
             if (transaction == null)
@@ -111,6 +112,14 @@ namespace Infrastructure.Repositories
                 .Include(t => t.Category)
                 .Include(t => t.Account)
                 .ToListAsync();
+        }
+
+        public async Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId)
+        {
+            await _context.Transactions
+                .Where(t => t.CategoryId == oldCategoryId && t.Account.UserId == userId)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(t => t.CategoryId, newCategoryId));
         }
     }
 }

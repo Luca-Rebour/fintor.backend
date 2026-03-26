@@ -40,7 +40,7 @@ namespace Application.UseCases.Auth
 
             if(user == null || !_passwordService.VerifyPassword(user.PasswordHash, signInDTO.Password))
             {
-                throw new AuthenticationException("Invalid credentials");
+                throw new InvalidCredentialException("Invalid credentials");
             }
             UserDTO userDTO = _mapper.Map<UserDTO>(user);
 

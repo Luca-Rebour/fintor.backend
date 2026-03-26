@@ -66,5 +66,13 @@ namespace Infrastructure.Repositories
         {
             _context.PendingAprovalTransactions.Update(recurringTransaction);
         }
+
+        public async Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId)
+        {
+            await _context.PendingAprovalTransactions
+                .Where(p => p.CategoryId == oldCategoryId && p.Account.UserId == userId)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(p => p.CategoryId, newCategoryId));
+        }
     }
 }

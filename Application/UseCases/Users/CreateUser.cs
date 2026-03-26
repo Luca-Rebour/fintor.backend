@@ -15,6 +15,7 @@ namespace Application.UseCases.Users
         private readonly IMapper _mapper;
         private readonly IPasswordService _passwordService;
         private readonly ICurrencyRepository _currencyRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtService _jwtService;
 
@@ -23,6 +24,7 @@ namespace Application.UseCases.Users
             IMapper mapper,
             IPasswordService passwordService,
             ICurrencyRepository currencyRepository,
+            ICategoryRepository categoryRepository,
             IUnitOfWork unitOfWork,
             IJwtService jwtService
             ) 
@@ -31,6 +33,7 @@ namespace Application.UseCases.Users
             _mapper = mapper;
             _passwordService = passwordService;
             _currencyRepository = currencyRepository;
+            _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
         }
@@ -54,6 +57,10 @@ namespace Application.UseCases.Users
             newUser.SetPassword(_passwordService.HashPassword(dto.Password));
             _userRepository.CreateUser(newUser);
             await _unitOfWork.SaveChangesAsync();
+
+            Category generalCategory = new Category(newUser.Id, "General", "ri-shapes-fill", "#64748B");
+            await _categoryRepository.CreateAsync(generalCategory);
+
             CreateUserResponseDTO ret = new CreateUserResponseDTO();
             ret.User = _mapper.Map<UserDTO>(newUser);
             ret.Token = _jwtService.GenerateToken(newUser.Id, newUser.Email);

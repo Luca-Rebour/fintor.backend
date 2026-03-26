@@ -14,10 +14,12 @@ namespace Fintor.api.Controllers
     {
         private readonly ICreateCategory _createCategory;
         private readonly IGetAllCategories _getAllCategories;
-        public CategoryController(ICreateCategory createCategory, IGetAllCategories getAllCategories)
+        private readonly IDeleteCategory _deleteCategory;
+        public CategoryController(ICreateCategory createCategory, IGetAllCategories getAllCategories, IDeleteCategory deleteCategory)
         {
             _createCategory = createCategory;
             _getAllCategories = getAllCategories;
+            _deleteCategory = deleteCategory;
         }
 
         [HttpPost]
@@ -36,6 +38,15 @@ namespace Fintor.api.Controllers
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             List<CategoryDTO> categories = await _getAllCategories.Execute(userId);
             return Ok(categories);
+        }
+
+        [HttpDelete("{categoryId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _deleteCategory.ExecuteAsync(categoryId, userId);
+            return NoContent();
         }
     }
 }

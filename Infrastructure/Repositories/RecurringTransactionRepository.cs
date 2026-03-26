@@ -85,5 +85,13 @@ namespace Infrastructure.Repositories
 		{
 			_context.RecurringTransactions.Remove(recurringTransaction);
 		}
+
+        public async Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId)
+        {
+            await _context.RecurringTransactions
+                .Where(r => r.CategoryId == oldCategoryId && r.Account.UserId == userId)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(r => r.CategoryId, newCategoryId));
+        }
 	}
 }

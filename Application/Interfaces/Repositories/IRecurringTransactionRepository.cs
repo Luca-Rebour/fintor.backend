@@ -19,5 +19,6 @@ namespace Application.Interfaces.Repositories
         Task<RecurringTransaction?> GetBydIdToUpdateAsync(Guid RecurringTransactionId);
         Task<List<RecurringTransaction>> GetRecurringTransactionsDueUpTo(DateOnly date);
         void Delete(RecurringTransaction recurringTransaction);
+        Task ReassignCategoryAsync(Guid oldCategoryId, Guid newCategoryId, Guid userId);
     }
 }

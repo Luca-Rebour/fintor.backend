@@ -41,5 +41,10 @@ namespace Infrastructure.Repositories
 
             return user;
         }
+
+        public async Task<User?> GetTrackedUserByIdAsync(Guid id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

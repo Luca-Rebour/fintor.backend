@@ -13,5 +13,6 @@ namespace Application.Interfaces.Repositories
         void CreateUser(User user);
         Task<User?> GetUserByEmail(string email);
         Task<User> GetUserById(Guid id);
+        Task<User?> GetTrackedUserByIdAsync(Guid id);
     }
 }

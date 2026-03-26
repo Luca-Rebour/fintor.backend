@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Yi1GQtzywtQ=",
+  "dgSpecHash": "ThFzzUsNIt0=",
   "success": true,
   "projectFilePath": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Fintor.api\\Fintor.api.csproj",
   "expectedPackageFiles": [
@@ -116,5 +116,18 @@
     "C:\\Users\\Luca Dev\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\Luca Dev\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'AutoMapper' 12.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
+      "projectPath": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Fintor.api\\Fintor.api.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Luca Dev\\Desktop\\fintor.backend\\Fintor.api\\Fintor.api.csproj",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

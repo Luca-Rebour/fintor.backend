@@ -34,5 +34,20 @@ namespace Infrastructure.Repositories
         {
             return await _context.Categories.FirstAsync(c => c.Name == name && c.UserId == userId);
         }
+
+        public async Task<Category?> GetCategoryByNameOrNullAsync(string name, Guid userId)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name && c.UserId == userId);
+        }
+
+        public async Task<Category?> GetTrackedByIdAsync(Guid categoryId, Guid userId)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
+        }
+
+        public void Delete(Category category)
+        {
+            _context.Categories.Remove(category);
+        }
     }
 }
