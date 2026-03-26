@@ -29,5 +29,18 @@ namespace Domain.Entities
             DeviceId = deviceId;
             LastSeenAt = lastSeenAt;
         }
+
+        public void SetEnabled(bool enabled)
+        {
+            Enabled = enabled;
+        }
+
+        public void UpdateToken(string token, Platform platform, string provider, DateOnly lastSeenAt)
+        {
+            DeviceId = token;
+            Platform = platform;
+            Provider = provider;
+            LastSeenAt = lastSeenAt;
+        }
     }
 }

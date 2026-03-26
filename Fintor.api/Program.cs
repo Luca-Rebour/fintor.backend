@@ -142,6 +142,8 @@ namespace Fintor.api
             builder.Services.AddScoped<IRecurringTransactionRepository, RecurringTransactionRepository>();
             builder.Services.AddScoped<IPendingApprovalTransactionRepository, PendingApprovalTransactionRepository>();
             builder.Services.AddScoped<IGoalRepository, GoalRepository>();
+            builder.Services.AddScoped<IPushSubscriptionRepository, PushSubscriptionRepository>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 
 
@@ -149,6 +151,9 @@ namespace Fintor.api
             builder.Services.AddScoped<ICreateUser, CreateUser>();
             builder.Services.AddScoped<IMe, Me>();
             builder.Services.AddScoped<IChangePassword, ChangePassword>();
+            builder.Services.AddScoped<IGetNotificationsEnabled, GetNotificationsEnabled>();
+            builder.Services.AddScoped<ISetNotificationToken, SetNotificationToken>();
+            builder.Services.AddScoped<ISendNotification, SendNotification>();
 
 
             // Inyeccion de dependencias UseCases de Auth
@@ -198,6 +203,11 @@ namespace Fintor.api
 
             //Inyeccion de dependencias Services
             builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.Configure<ExpoPushOptions>(builder.Configuration.GetSection("ExpoPush"));
+            builder.Services.AddHttpClient<IPushNotificationService, ExpoPushNotificationService>(client =>
+            {
+                client.BaseAddress = new Uri("https://exp.host/--/api/v2/");
+            });
             builder.Services.AddHostedService<RecurringTransactionHostedService>();
             builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -12,11 +12,22 @@ namespace Fintor.api.Controllers
     {
         private readonly ICreateUser _createUser;
         private readonly IChangePassword _changePassword;
+        private readonly IGetNotificationsEnabled _getNotificationsEnabled;
+        private readonly ISetNotificationToken _setNotificationToken;
+        private readonly ISendNotification _sendNotification;
 
-        public UserController(ICreateUser createUser, IChangePassword changePassword)
+        public UserController(
+            ICreateUser createUser,
+            IChangePassword changePassword,
+            IGetNotificationsEnabled getNotificationsEnabled,
+            ISetNotificationToken setNotificationToken,
+            ISendNotification sendNotification)
         {
             _createUser = createUser;
             _changePassword = changePassword;
+            _getNotificationsEnabled = getNotificationsEnabled;
+            _setNotificationToken = setNotificationToken;
+            _sendNotification = sendNotification;
         }
 
         [HttpPost("create-user")]
@@ -32,6 +43,33 @@ namespace Fintor.api.Controllers
         {
             Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             await _changePassword.ExecuteAsync(changePasswordDTO, userId);
+            return NoContent();
+        }
+
+        [HttpGet("notifications/enabled")]
+        [Authorize]
+        public async Task<IActionResult> GetNotificationsEnabled()
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            GetNotificationsEnabledResponseDTO response = await _getNotificationsEnabled.ExecuteAsync(userId);
+            return Ok(response);
+        }
+
+        [HttpPost("notifications/token")]
+        [Authorize]
+        public async Task<IActionResult> SetNotificationToken([FromBody] SetNotificationTokenDTO dto)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _setNotificationToken.ExecuteAsync(dto, userId);
+            return NoContent();
+        }
+
+        [HttpPost("notifications/send")]
+        [Authorize]
+        public async Task<IActionResult> SendNotification([FromBody] SendNotificationDTO dto, CancellationToken cancellationToken)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _sendNotification.ExecuteAsync(dto, userId, cancellationToken);
             return NoContent();
         }
     }
