@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases.PendingApproveTransactions;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,11 @@ namespace Application.UseCases.PendingApprovalTransactions
             {
                 throw new KeyNotFoundException("Pending Transaction Not Found");
             }
+            if (pendingApprovalTransaction.Account.UserId != userId)
+            {
+                throw new ForbiddenException("User does not have access to the requested account.");
+            }
+
             pendingApprovalTransaction.Reschedule(newDate);
             await _unitOfWork.SaveChangesAsync();
         }

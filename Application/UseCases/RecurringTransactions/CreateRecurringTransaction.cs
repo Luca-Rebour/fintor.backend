@@ -17,15 +17,18 @@ namespace Application.UseCases.RecurringTransactions
         private readonly IRecurringTransactionRepository _recurringTransactionRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateRecurringTransaction(IRecurringTransactionRepository recurringTransactionRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IAccountRepository _accountRepository;
+        public CreateRecurringTransaction(IAccountRepository accountRepository, IRecurringTransactionRepository recurringTransactionRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
+            _accountRepository = accountRepository;
             _recurringTransactionRepository = recurringTransactionRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        public async Task<RecurringTransactionDTO> ExecuteAsync(CreateRecurringTransactionDTO createRecurringTransactionDTO)
+        public async Task<RecurringTransactionDTO> ExecuteAsync(CreateRecurringTransactionDTO createRecurringTransactionDTO, Guid userId)
         {
             createRecurringTransactionDTO.Validate();
+            await _accountRepository.GetAccountByIdAsync(createRecurringTransactionDTO.AccountId, userId);
             RecurringTransaction recurringTransaction = new RecurringTransaction(createRecurringTransactionDTO.CategoryId, createRecurringTransactionDTO.AccountId, createRecurringTransactionDTO.Name, createRecurringTransactionDTO.Amount, createRecurringTransactionDTO.Description, createRecurringTransactionDTO.transactionType, createRecurringTransactionDTO.Frequency, createRecurringTransactionDTO.StartDate, createRecurringTransactionDTO.EndDate);
             _recurringTransactionRepository.AddAsync(recurringTransaction);
             RecurringTransactionDTO recurringTransactionDTO = _mapper.Map<RecurringTransactionDTO>(recurringTransaction);

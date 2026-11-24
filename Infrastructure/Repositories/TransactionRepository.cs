@@ -27,11 +27,11 @@ namespace Infrastructure.Repositories
             _context.Transactions.Add(transaction);
         }
 
-        public async Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId)
+        public async Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId, Guid userId)
         {
             return await _context.Transactions
                 .AsNoTracking()
-                .Where(m => m.AccountId == accountId)
+                .Where(m => m.AccountId == accountId && m.Account.UserId == userId)
                 .Include(m => m.Category)
                 .ToListAsync();
         }

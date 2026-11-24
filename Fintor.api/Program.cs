@@ -117,20 +117,22 @@ namespace Fintor.api
              options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IPasswordService, PasswordService>();
 
-            var mapperConfig = new MapperConfiguration(cfg =>
+            builder.Services.AddSingleton<IMapper>(services =>
             {
-                cfg.AddProfile<AccountProfile>();
-                cfg.AddProfile<CategoryProfile>();
-                cfg.AddProfile<TransactionProfile>();
-                cfg.AddProfile<RecurringTransactionProfile>();
-                cfg.AddProfile<UserProfile>();
-                cfg.AddProfile<GoalProfile>();
+                var mapperConfig = new MapperConfiguration(cfg =>
+                {
+                    cfg.LicenseKey = builder.Configuration["AutoMapper:LicenseKey"];
+                    cfg.AddProfile<AccountProfile>();
+                    cfg.AddProfile<CategoryProfile>();
+                    cfg.AddProfile<TransactionProfile>();
+                    cfg.AddProfile<RecurringTransactionProfile>();
+                    cfg.AddProfile<PendingApprovalTransactionProfile>();
+                    cfg.AddProfile<UserProfile>();
+                    cfg.AddProfile<GoalProfile>();
 
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-
-            builder.Services.AddSingleton(mapper);
+                }, services.GetRequiredService<ILoggerFactory>());
+                return mapperConfig.CreateMapper();
+                });
 
             // Inyeccion de dependencias de Repositories
 
@@ -190,6 +192,7 @@ namespace Fintor.api
             // Inyeccion de dependencias UseCases de RecurringTransaction
             builder.Services.AddScoped<IGenerateRecurringTransactions, GenerateRecurringTransaction>();
             builder.Services.AddScoped<ICreateRecurringTransaction, CreateRecurringTransaction>();
+            builder.Services.AddScoped<IUpdateRecurringTransaction, UpdateRecurringTransaction>();
             builder.Services.AddScoped<IGetAccountRecurringTransactions, GetAccountRecurringTransactions>();
 			builder.Services.AddScoped<IGetRecurringTransactions, GetRecurringTransactions>();
 			builder.Services.AddScoped<IDeleteRecurringTransaction, DeleteRecurringTransaction>();

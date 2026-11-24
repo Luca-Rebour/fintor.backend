@@ -9,6 +9,6 @@ namespace Application.Interfaces.UseCases.Accounts
 {
     public interface IGetAccountTransactions
     {
-        Task<List<TransactionDTO>> ExecuteAsync(Guid accountId);
+        Task<List<TransactionDTO>> ExecuteAsync(Guid accountId, Guid userId);
     }
 }

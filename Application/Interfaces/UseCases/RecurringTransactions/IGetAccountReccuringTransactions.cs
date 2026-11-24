@@ -9,6 +9,6 @@ namespace Application.Interfaces.UseCases.RecurringTransactions
 {
     public interface IGetAccountRecurringTransactions
     {
-        Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId);
+        Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId, Guid userId);
     }
 }

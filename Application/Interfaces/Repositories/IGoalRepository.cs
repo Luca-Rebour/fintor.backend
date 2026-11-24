@@ -10,6 +10,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IGoalRepository
     {
+        Task<bool> BelongsToAccountAsync(Guid goalId, Guid accountId, Guid userId);
             Task<GoalDTO?> GetByIdAsync(Guid goalId, Guid userId);
             Task<List<GoalDTO>> GetAllAsync(Guid userId);
             void Add(Goal goal);

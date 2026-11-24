@@ -20,7 +20,7 @@ namespace Application.MappingProfiles
                     .ForMember(dest => dest.AccountName,
                         opt => opt.MapFrom(src => src.Account.Name))
                     .ForMember(dest => dest.CurrencyCode,
-                        opt => opt.MapFrom(src => src.Account.Currency));
+                        opt => opt.MapFrom(src => src.Account.Currency.Code));
         }
     }
 }

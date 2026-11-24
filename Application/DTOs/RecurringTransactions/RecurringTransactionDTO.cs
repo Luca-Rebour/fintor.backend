@@ -11,6 +11,8 @@ namespace Application.DTOs.RecurringTransactions
     public class RecurringTransactionDTO
     {
         public Guid Id { get; set; }
+        public Guid AccountId { get; set; }
+        public Guid CategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public string Description { get; set; } = string.Empty;

@@ -12,7 +12,7 @@ namespace Application.Interfaces.Repositories
     public interface ITransactionRepository
     {
         void CreateTransaction(Transaction transaction);
-        Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId);
+        Task<List<Transaction>> GetAccountTransactionsAsync(Guid accountId, Guid userId);
         Task<List<Transaction>> GetAllTransactionsAsync(Guid userId);
         Task<Transaction> GetTransactionAsync(Guid transactionId, Guid userId);
         Task<IReadOnlyList<OverviewResponseDTO>> GetOverview(Guid userId);

@@ -22,6 +22,9 @@ namespace Infrastructure.Repositories
             _context.Goals.Add(goal);
         }
 
+        public Task<bool> BelongsToAccountAsync(Guid goalId, Guid accountId, Guid userId)
+            => _context.Goals.AnyAsync(g => g.Id == goalId && g.AccountId == accountId && g.Account.UserId == userId);
+
         public void Delete(Goal goal)
         {
             _context.Goals.Remove(goal);
@@ -43,7 +46,7 @@ namespace Infrastructure.Repositories
                     TargetAmount = g.TargetAmount,
                     AccountName = g.Account.Name,
                     CurrencyCode = g.Account.Currency.Code,
-                    CurrentAmount = g.Transactions.Sum(t => t.Amount)
+                    CurrentAmount = g.Transactions.Sum(t => t.TransactionType == Domain.Enums.TransactionType.Income ? t.Amount : -t.Amount)
                 })
                 .ToListAsync();
         }
@@ -64,7 +67,7 @@ namespace Infrastructure.Repositories
                     TargetAmount = g.TargetAmount,
                     AccountName = g.Account.Name,
                     CurrencyCode = g.Account.Currency.Code,
-                    CurrentAmount = g.Transactions.Sum(t => t.Amount)
+                    CurrentAmount = g.Transactions.Sum(t => t.TransactionType == Domain.Enums.TransactionType.Income ? t.Amount : -t.Amount)
                 })
                 .FirstOrDefaultAsync();
         }

@@ -14,6 +14,7 @@ namespace Application.MappingProfiles
     {
         public RecurringTransactionProfile() {
             CreateMap<RecurringTransaction, RecurringTransactionDTO>()
+                    .ForMember(dest => dest.NextChargeDate, opt => opt.MapFrom(src => src.NextDueDate))
                     .ForMember(dest => dest.Icon,
                         opt => opt.MapFrom(src => src.Category.Icon))
                     .ForMember(dest => dest.AccountName,

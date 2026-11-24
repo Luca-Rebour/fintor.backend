@@ -16,10 +16,12 @@ namespace Fintor.api.Controllers
         private readonly ICreateRecurringTransaction _createRecurringTransaction;
         private readonly IGetRecurringTransactions _getRecurringTransactions;
         private readonly IDeleteRecurringTransaction _deleteRecurringTransaction;
+        private readonly IUpdateRecurringTransaction _updateRecurringTransaction;
         public RecurringTransactionController(ICreateRecurringTransaction createRecurringTransaction, 
             IGetRecurringTransactions getRecurringTransactions, 
-            IDeleteRecurringTransaction deleteRecurringTransaction)
+            IDeleteRecurringTransaction deleteRecurringTransaction, IUpdateRecurringTransaction updateRecurringTransaction)
         {
+            _updateRecurringTransaction = updateRecurringTransaction;
             _createRecurringTransaction = createRecurringTransaction;
             _getRecurringTransactions = getRecurringTransactions;
             _deleteRecurringTransaction = deleteRecurringTransaction;
@@ -29,8 +31,17 @@ namespace Fintor.api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateRecurringTransaction([FromBody] CreateRecurringTransactionDTO createRecurringTransactionDTO)
         {
-            RecurringTransactionDTO recurringTransactionDTO = await _createRecurringTransaction.ExecuteAsync(createRecurringTransactionDTO);
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            RecurringTransactionDTO recurringTransactionDTO = await _createRecurringTransaction.ExecuteAsync(createRecurringTransactionDTO, userId);
             return Ok(recurringTransactionDTO);
+        }
+
+        [HttpPut("{recurringTransactionId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateRecurringTransaction(Guid recurringTransactionId, [FromBody] CreateRecurringTransactionDTO dto)
+        {
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            return Ok(await _updateRecurringTransaction.ExecuteAsync(recurringTransactionId, dto, userId));
         }
 
         [HttpGet]

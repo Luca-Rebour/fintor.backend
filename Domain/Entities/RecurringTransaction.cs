@@ -51,6 +51,30 @@ namespace Domain.Entities
             NextDueDate = startDate;
         }
 
+        public void Edit(Guid categoryId, Guid accountId, string name, decimal amount, string description,
+            TransactionType transactionType, Frequency frequency, DateOnly startDate, DateOnly endDate)
+        {
+            bool generated = NextDueDate > StartDate;
+            var previousNext = NextDueDate;
+            bool scheduleChanged = StartDate != startDate || Frequency != frequency;
+            CategoryId = categoryId;
+            AccountId = accountId;
+            Name = name;
+            Amount = amount;
+            Description = description;
+            TransactionType = transactionType;
+            Frequency = frequency;
+            StartDate = startDate;
+            EndDate = endDate;
+            if (scheduleChanged)
+            {
+                NextDueDate = startDate;
+                // Never regenerate occurrences already consumed by the background job.
+                while (generated && NextDueDate < previousNext)
+                    NextDueDate = CalculateNext(NextDueDate);
+            }
+        }
+
         // Indica si hoy hay al menos una ocurrencia que ya debería existir como Pending
         public bool ShouldGenerate(DateOnly today){
             return NextDueDate <= today && NextDueDate <= EndDate;

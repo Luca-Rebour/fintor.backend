@@ -52,11 +52,11 @@ namespace Infrastructure.Repositories
                 _context.RecurringTransactions.Remove(recurringTransaction);
         }
 
-        public async Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync(Guid accountId)
+        public async Task<List<RecurringTransaction>> GetAccountRecurringTransactionsAsync(Guid accountId, Guid userId)
         {
             return await _context.RecurringTransactions
                 .AsNoTracking()
-                .Where(m => m.AccountId == accountId)
+                .Where(m => m.AccountId == accountId && m.Account.UserId == userId)
                 .ToListAsync();
         }
 

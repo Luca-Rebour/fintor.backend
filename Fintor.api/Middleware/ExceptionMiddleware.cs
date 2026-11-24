@@ -58,6 +58,12 @@ namespace Api.Middlewares
                     code = "VALIDATION_ERROR";
                     break;
 
+                case ForbiddenException forbiddenEx:
+                    statusCode = StatusCodes.Status403Forbidden;
+                    message = forbiddenEx.Message;
+                    code = forbiddenEx.Code;
+                    break;
+
                 case DomainException domainEx:
                     statusCode = StatusCodes.Status400BadRequest;
                     message = domainEx.Message;

@@ -122,6 +122,7 @@ namespace Infrastructure.Repositories
                         .Select(t => new TransactionDTO
                         {
                             Id = t.Id,
+                            GoalId = t.GoalId,
                             Amount = t.Amount,
                             Date = t.Date,
                             Description = t.Description ?? string.Empty,

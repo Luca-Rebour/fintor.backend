@@ -17,14 +17,17 @@ namespace Application.UseCases.RecurringTransactions
     {
         private readonly IRecurringTransactionRepository _recurringTransactionRepository;
         private readonly IMapper _mapper;
-        public GetAccountRecurringTransactions(IRecurringTransactionRepository recurringTransactionRepository, IMapper mapper)
+        private readonly IAccountRepository _accountRepository;
+        public GetAccountRecurringTransactions(IAccountRepository accountRepository, IRecurringTransactionRepository recurringTransactionRepository, IMapper mapper)
         {
+            _accountRepository = accountRepository;
             _recurringTransactionRepository = recurringTransactionRepository;
             _mapper = mapper;
         }
-        public async Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId)
+        public async Task<List<RecurringTransactionDTO>> ExecuteAsync(Guid accountId, Guid userId)
         {
-            List<RecurringTransaction> recurringTransactions = await _recurringTransactionRepository.GetAccountRecurringTransactionsAsync(accountId);
+            await _accountRepository.GetAccountByIdAsync(accountId, userId);
+            List<RecurringTransaction> recurringTransactions = await _recurringTransactionRepository.GetAccountRecurringTransactionsAsync(accountId, userId);
             List<RecurringTransactionDTO> ret = _mapper.Map<List<RecurringTransactionDTO>>(recurringTransactions);
             return ret;
         }

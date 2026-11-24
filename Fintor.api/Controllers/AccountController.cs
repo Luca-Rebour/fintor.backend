@@ -55,7 +55,8 @@ namespace Fintor.api.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllTransactions(Guid accountId)
         {
-            IEnumerable<TransactionDTO> transactions = await _getAccountTransactions.ExecuteAsync(accountId);
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            IEnumerable<TransactionDTO> transactions = await _getAccountTransactions.ExecuteAsync(accountId, userId);
             return Ok(transactions);
         }
 
